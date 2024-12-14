@@ -4,115 +4,86 @@
  *
  * @format
  */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+// import { Provider } from 'react-redux';
+// import { UIKitProvider } from '@tencentcloud/chat-uikit-react-native';
+// import store from './src/store';
+import React, {useEffect, useRef} from 'react';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { LoginUsingStorageInfo } from './src/initApp';
+import { Home as HomeScreen } from './src/pages/Home';
+import {setMessage} from './src/store/modules/Messages';
+import {connect, disconnect, errorOccurred} from './src/store/modules/Socket';
+import {useDispatch} from 'react-redux';
+// import { RootState } from './src/store';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  // const {status: socket} = useSelector(state => state.socket);
+  const Stack = createNativeStackNavigator();
+  const navigationRef = useNavigationContainerRef();
+  // useEffect(() => {
+  //   LoginUsingStorageInfo(() => {
+  //     navigationRef.navigate('Home');
+  //   });
+  // });
+  const dispatch = useDispatch();
+  const ws = useRef<WebSocket|null>(null);
+  // const {isConnected} = useSelector((state:RootState) => state.socket);
+  // 建立 WebSocket 连接
+  useEffect(() => {
+    const connectWebSocket = () => {
+      let reconnectTimer:number|null|NodeJS.Timeout  = null;
+      ws.current = new WebSocket('ws://localhost:4023');
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+      ws.current.onopen = () => {
+        console.log('WebSocket connection established');
+        if (reconnectTimer) {
+          clearInterval(reconnectTimer);
+        }
+        dispatch(connect()); // 保存 WebSocket 实例
+      };
 
+      ws.current.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        console.log('Received data: ', data);
+        dispatch(setMessage(data)); // 更新状态以显示从服务器接收到的消息
+      };
+
+      ws.current.onerror = (e: {message: any}) => {
+        console.log('WebSocket error:', e.message);
+        dispatch(errorOccurred(e)); // 清除 WebSocket 实例
+      };
+
+      ws.current.onclose = () => {
+        console.log('WebSocket connection closed');
+        dispatch(disconnect()); // 清除 WebSocket 实例
+        reconnectTimer = setInterval(()=>{
+          console.log('web socket connection is closed, reconnecting...');
+          connectWebSocket();
+          }, 5000);
+      };
+    };
+    // 在组件挂载时建立连接
+    connectWebSocket();
+
+    // 在组件卸载时断开连接
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
+  }, [dispatch]);
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{ headerShown: true}}
+        >
+          {/*<Stack.Screen name="Login" component={LoginScreen} />*/}
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
