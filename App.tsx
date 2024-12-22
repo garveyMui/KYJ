@@ -30,15 +30,15 @@ function App(): React.JSX.Element {
   const ws = useRef<WebSocket|null>(null);
   // const {isConnected} = useSelector((state:RootState) => state.socket);
   // 建立 WebSocket 连接
+  const reconnectTimerRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     const connectWebSocket = () => {
-      let reconnectTimer:number|null|NodeJS.Timeout  = null;
       ws.current = new WebSocket('ws://localhost:4023');
 
       ws.current.onopen = () => {
         console.log('WebSocket connection established');
-        if (reconnectTimer) {
-          clearInterval(reconnectTimer);
+        if (reconnectTimerRef.current) {
+          clearInterval(reconnectTimerRef.current);
         }
         dispatch(connect()); // 保存 WebSocket 实例
       };
@@ -46,7 +46,7 @@ function App(): React.JSX.Element {
       ws.current.onmessage = (e) => {
         const data = JSON.parse(e.data);
         console.log('Received data: ', data);
-        dispatch(setMessage(data)); // 更新状态以显示从服务器接收到的消息
+        dispatch(setMessage(data.data)); // 更新状态以显示从服务器接收到的消息
       };
 
       ws.current.onerror = (e: {message: any}) => {
@@ -57,7 +57,7 @@ function App(): React.JSX.Element {
       ws.current.onclose = () => {
         console.log('WebSocket connection closed');
         dispatch(disconnect()); // 清除 WebSocket 实例
-        reconnectTimer = setInterval(()=>{
+        reconnectTimerRef.current = setInterval(()=>{
           console.log('web socket connection is closed, reconnecting...');
           connectWebSocket();
           }, 5000);
@@ -68,6 +68,9 @@ function App(): React.JSX.Element {
 
     // 在组件卸载时断开连接
     return () => {
+      if (reconnectTimerRef.current) {
+        clearInterval(reconnectTimerRef.current);
+      }
       if (ws.current) {
         ws.current.close();
       }
@@ -80,7 +83,11 @@ function App(): React.JSX.Element {
           screenOptions={{ headerShown: true}}
         >
           {/*<Stack.Screen name="Login" component={LoginScreen} />*/}
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false, gestureEnabled: true}}
+          />
         </Stack.Navigator>
       </NavigationContainer>
   );

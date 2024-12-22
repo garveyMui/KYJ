@@ -2,12 +2,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React from 'react';
-const Tab = createBottomTabNavigator();
 import { UserProfile } from '../UserProfile';
 import {View} from 'react-native';
 import {StyleSheet} from 'react-native';
-import {ConversationListScreen} from '../../../pages/UIKitScreen';
+import {ChatListScreen, ChatScreen} from '../../../pages/UIKitScreen';
 
+const Tab = createBottomTabNavigator();
 function TabBar() {
   return (
     <View style={styles.container}>
@@ -20,7 +20,7 @@ function TabBar() {
       >
         <Tab.Screen
           name="Messenger"
-          component={ConversationListScreen}
+          component={ChatListScreen}
           options={{
             tabBarLabel: 'Messenger',
             tabBarIcon: ({ color , size }) => (
@@ -31,7 +31,7 @@ function TabBar() {
         />
         <Tab.Screen
           name="Docs"
-          component={UserProfile}
+          component={ChatScreen}
           options={{
             tabBarLabel: 'Docs',
             tabBarIcon: ({ color, size }) => (

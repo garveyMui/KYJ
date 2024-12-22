@@ -1,23 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    messages: [],
+    messagesList: [],
   },
   reducers: {
     addMessage: (state, action) => {
-      state.messages.push(action.payload);
+      state.messagesList.push(action.payload);
     },
     removeMessage: (state, action) => {
-      state.messages = state.messages.filter((message) => message.id !== action.payload);
+      state.messagesList = state.messagesList.filter((message) => message.id !== action.payload);
     },
     setMessage: (state, action) => {
-      state.messages = action.payload;
+      state.messagesList = action.payload;
     },
   },
 });
 
+const postMessage = (message, callbacks) => {
+  const URL = "http://localhost:8000/messages/" + message.id;
+  return async (dispatch) => {
+    // const res = await axios.post(URL, message);
+    try {
+      // const res = await axios.post(URL, message);
+      dispatch(addMessage(message));
+      // 如果有回调函数，则执行它们
+      callbacks.forEach(callback => callback());
+    } catch (error) {
+      // 处理错误，例如可以在这里调用回调函数
+      callbacks.forEach(callback => callback(error));
+      throw error; // 抛出错误，以便可以在外部捕获
+    }
+  };
+};
 
 
 export const {
@@ -25,5 +42,7 @@ export const {
   removeMessage,
   setMessage,
 } = messagesSlice.actions;
+
+export { postMessage };
 
 export default messagesSlice.reducer;

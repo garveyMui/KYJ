@@ -10,7 +10,6 @@ function Home({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {/*<TabBar />*/}
-      <Text>This is Home</Text>
       <TabBar />
     </SafeAreaView>
   );
