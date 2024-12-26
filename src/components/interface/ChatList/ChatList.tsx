@@ -1,6 +1,6 @@
 // ChatList.tsx
 import React, {useMemo} from 'react';
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {ChatObject} from '../../../store/modules/ChatObject.ts';
@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {useChatListContext} from '../../context';
 import dayjs from 'dayjs';
 
-interface Message{
+interface Message {
   messageId: string;
   conversationId: string;
   sender: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   messageContainer: {
     margin: 10,
     padding: 10,
-    // backgroundColor: '#fff',
+    backgroundColor: '#fff',
     borderRadius: 10,
     elevation: 2,
   },

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Button, Image, StyleSheet, Text } from 'react-native';
+import React, {useState} from 'react';
+import {Button, Image, StyleSheet, View} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const ImagePickerComponent = () => {
@@ -10,11 +10,13 @@ const ImagePickerComponent = () => {
       // noData: true,
       mediaType: 'photo',
     };
-    ImagePicker.launchImageLibrary(options).then((result) => {
-      setLocalImageAndVideoInfo(res.assets[0]);
-    }).catch((err) => {
-      console.log(err);
-    });
+    ImagePicker.launchImageLibrary(options)
+      .then(result => {
+        setLocalImageAndVideoInfo(res.assets[0]);
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     ImagePicker.launchImageLibrary(options, response => {
       if (response.uri) {
@@ -35,7 +37,7 @@ const ImagePickerComponent = () => {
       <Button title="选择照片" onPress={handleChoosePhoto} />
       <View style={styles.imagesContainer}>
         {images.map((image, index) => (
-          <Image key={index} source={{ uri: image.uri }} style={styles.image} />
+          <Image key={index} source={{uri: image.uri}} style={styles.image} />
         ))}
       </View>
       {images.length > 0 && (

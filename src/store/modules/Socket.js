@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+
 const SocketSlice = createSlice({
   name: 'socket',
   initialState: {
@@ -6,10 +7,10 @@ const SocketSlice = createSlice({
     error: null,
   },
   reducers: {
-    connect: (state) => {
+    connect: state => {
       state.isConnected = true;
     },
-    disconnect: (state) => {
+    disconnect: state => {
       state.isConnected = false;
     },
     errorOccurred: (state, action) => {

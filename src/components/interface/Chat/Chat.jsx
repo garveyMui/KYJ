@@ -1,37 +1,70 @@
 import React from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ChatComponent = ({ opponentName, opponentAvatar, onBackPress, onSendPress, onMediaPress }) => {
+import {IRouterParams} from '@/interface';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../../store';
+import {MessageList} from '../MessageList';
+import {ChatHeader} from '../ChatHeader';
+import {MessageInput} from '../MessageInput';
+import {MessageInputProvider, useChatContext} from '../../context';
+
+const windowHeight = Dimensions.get('window').height;
+export const Chat = ({ navigation }: IRouterParams) => {
+  const navigateBack = () => {
+    navigation.goBack();
+  };
+  const navigateToChatSetting = () => {
+    navigation.navigate('ChatSetting');
+  };
+  // const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const {
+    keyboardHeight,
+    setKeyboardHeight,
+    contentOffset,
+    setContentOffset,
+    setInputHeight,
+    setContentHeight,
+    contentHeight,
+  } = useChatContext();
+  console.log('keyboardHeight', keyboardHeight);
+
+  const {id: sender, name, avatar} = useSelector((state: RootState) => state.chatObject);
+  const {conversationId} = useSelector((state: RootState) => state.chatObject);
+  const chatObject = {
+    id: sender,
+    name,
+    avatar,
+  };
+  const handleInputLayout = (event) => {
+    const {height} = event.nativeEvent.layout;
+    setInputHeight(height);
+  };
+  const handleContentLayout = (event) => {
+    const {height} = event.nativeEvent.layout;
+    setContentHeight(height);
+  };
   return (
     <View style={styles.container}>
-      {/* 顶部栏 */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
-          <Text style={styles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-        <View style={styles.userInfo}>
-          <Image source={{ uri: opponentAvatar }} style={styles.avatar} />
-          <Text style={styles.userName}>{opponentName}</Text>
-        </View>
-      </View>
-
-      {/* 聊天内容区域 */}
-      {/* 这里可以放置消息列表组件，例如使用FlatList来渲染消息 */}
-
-      {/* 底部输入框和功能按钮 */}
-      <View style={styles.footer}>
-        <TouchableOpacity onPress={onMediaPress} style={styles.mediaButton}>
-          <Text style={styles.mediaButtonText}>+</Text>
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          placeholder="Type a message..."
-          // onChangeText={(text) => setMessageText(text)}
-          // value={messageText}
+      <View style={{zIndex: 100}}>
+        <ChatHeader
+          navigateBack={navigateBack}
+          navigateToChatSetting={navigateToChatSetting}
+          chatObject={chatObject}
         />
-        <TouchableOpacity onPress={onSendPress} style={styles.sendButton}>
-          <Text style={styles.sendButtonText}>Send</Text>
-        </TouchableOpacity>
+      </View>
+      <View
+        style={[styles.contentContainer, {bottom: contentOffset}]}
+        onLayout={handleContentLayout}
+      >
+        <View style={styles.messagesListContainer}>
+          <MessageList conversationId={conversationId} />
+        </View>
+        <View style={[styles.inputContainer, {bottom: 0}]} onLayout={handleInputLayout}>
+          <MessageInputProvider >
+            <MessageInput />
+          </MessageInputProvider>
+        </View>
       </View>
     </View>
   );
@@ -40,61 +73,31 @@ const ChatComponent = ({ opponentName, opponentAvatar, onBackPress, onSendPress,
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
+    // backgroundColor: '#1F1F1F',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  backButton: {
-    // 根据需要调整样式
-  },
-  backButtonText: {
-    fontSize: 16,
-  },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 10,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  userName: {
-    fontSize: 18,
-    marginLeft: 10,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-  },
-  mediaButton: {
-    // 根据需要调整样式
-  },
-  mediaButtonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  input: {
+  contentContainer: {
+    position: 'relative',
     flex: 1,
-    height: 40,
-    marginHorizontal: 10,
-    paddingHorizontal: 10,
-    borderColor: '#ccc',
+    height: windowHeight,
+    borderStyle: 'solid',
+    borderColor: 'red',
     borderWidth: 1,
-    borderRadius: 20,
   },
-  sendButton: {
-    // 根据需要调整样式
+
+  messagesListContainer: {
+    // flex: 0,
+    position: 'absolute',
+    top: 0,
+    // height: '100%',
+    width: '100%',
   },
-  sendButtonText: {
-    fontSize: 16,
+  inputContainer: {
+    position: 'absolute',
+    // bottom: -20,
+    zIndex: 100,
+    borderColor: 'green',
+    borderWidth: 1,
+    width: '100%',
   },
 });
-
-export {ChatComponent};

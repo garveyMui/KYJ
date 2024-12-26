@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* kkjTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* kkjTests.m */; };
+		054117292D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 054117282D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf */; };
+		0541172A2D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 054117282D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf */; };
+		0541172C2D1947C700CE8967 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0541172B2D1947C700CE8967 /* avatar.jpg */; };
+		0541172D2D1947C700CE8967 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0541172B2D1947C700CE8967 /* avatar.jpg */; };
+		054117302D19488700CE8967 /* 1706.03762v7.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0541172E2D19488600CE8967 /* 1706.03762v7.pdf */; };
+		054117312D19488700CE8967 /* Vim实用技巧.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 0541172F2D19488600CE8967 /* Vim实用技巧.pdf */; };
 		0C80B921A6F3F58F76C31292 /* libPods-kkj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-kkj.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -32,6 +38,10 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* kkjTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = kkjTests.m; sourceTree = "<group>"; };
 		054117272D0C513200CE8967 /* kkj.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = kkj.entitlements; path = kkj/kkj.entitlements; sourceTree = "<group>"; };
+		054117282D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf"; sourceTree = "<group>"; };
+		0541172B2D1947C700CE8967 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
+		0541172E2D19488600CE8967 /* 1706.03762v7.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = 1706.03762v7.pdf; path = Resources/1706.03762v7.pdf; sourceTree = "<group>"; };
+		0541172F2D19488600CE8967 /* Vim实用技巧.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "Vim实用技巧.pdf"; path = "Resources/Vim实用技巧.pdf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* kkj.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kkj.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = kkj/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = kkj/AppDelegate.mm; sourceTree = "<group>"; };
@@ -121,6 +131,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0541172E2D19488600CE8967 /* 1706.03762v7.pdf */,
+				0541172F2D19488600CE8967 /* Vim实用技巧.pdf */,
 				13B07FAE1A68108700A75B9A /* kkj */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* kkjTests */,
@@ -157,6 +169,8 @@
 		E4C419688AEC4071B4DA3C1F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				054117282D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf */,
+				0541172B2D1947C700CE8967 /* avatar.jpg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -212,7 +226,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -247,6 +262,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0541172D2D1947C700CE8967 /* avatar.jpg in Resources */,
+				0541172A2D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +271,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054117302D19488700CE8967 /* 1706.03762v7.pdf in Resources */,
+				054117312D19488700CE8967 /* Vim实用技巧.pdf in Resources */,
+				054117292D1947B200CE8967 /* NIPS-2012-imagenet-classification-with-deep-convolutional-neural-networks-Paper.pdf in Resources */,
+				0541172C2D1947C700CE8967 /* avatar.jpg in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				7E5AA2D34DA2AA11AF42D694 /* PrivacyInfo.xcprivacy in Resources */,
@@ -533,6 +554,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -562,6 +584,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -613,6 +636,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -642,6 +666,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;

@@ -1,12 +1,10 @@
-import {SafeAreaView, View, Text, StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 const UserProfile = () => {
   return (
     <View style={styles.container}>
-      <Text>
-        this is profile
-      </Text>
+      <Text>this is profile</Text>
     </View>
   );
 };

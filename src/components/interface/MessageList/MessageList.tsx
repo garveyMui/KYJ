@@ -1,25 +1,35 @@
-import {FlatList, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
-import { MessageItem } from '../MessageItem';
-import {useMemo} from 'react';
+import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {MessageItem} from '../MessageItem';
+import {useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
+import {useChatContext} from '../../context';
 
 const MessageList: React.FC<Props> = ({conversationId}) => {
   const {messagesList} = useSelector((state: RootState) => state.messages);
-  const chatRecords = useMemo(():Array<Message> => {
+  const chatRecords = useMemo((): Array<Message> => {
     const getChatRecords = (): Array<Message> => {
-      return messagesList.filter((item: Message) => item.conversationId === conversationId);
+      return messagesList.filter(
+        (item: Message) => item.conversationId === conversationId,
+      );
     };
     return getChatRecords();
   }, [messagesList, conversationId]);
+  const {messageListRef, inputHeight, contentHeight, handleScrollToEnd} =
+    useChatContext();
+  useEffect(() => {
+    handleScrollToEnd();
+  }, [chatRecords, handleScrollToEnd]);
   return (
-    <FlatList style={styles.container}
-              contentContainerStyle={{
-                flexGrow: 1,
-              }}
+    <FlatList
+      ref={messageListRef}
+      style={[styles.container, {height: contentHeight - inputHeight}]}
+      contentContainerStyle={{
+        flexGrow: 1,
+      }}
       data={chatRecords}
       renderItem={({item}) => (
-        <TouchableWithoutFeedback onPress={()=>{}}>
+        <TouchableWithoutFeedback onPress={() => {}}>
           <MessageItem message={item} isOwnMessage={item.sender.id === '-1'} />
         </TouchableWithoutFeedback>
       )}
@@ -30,19 +40,19 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '89%',
+    // height: '89%',
     width: '100%',
     // backgroundColor: '#1F1F1F',
   },
 });
 
 interface Props {
-  conversationId: string|null;
+  conversationId: string | null;
 }
 
-interface Message{
+interface Message {
   messageId: string;
-  conversationId: string|null;
+  conversationId: string | null;
   sender: {
     id: string;
     name: string;
@@ -53,4 +63,4 @@ interface Message{
   };
 }
 
-export { MessageList };
+export {MessageList};

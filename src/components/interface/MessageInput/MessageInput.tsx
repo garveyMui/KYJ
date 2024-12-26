@@ -1,21 +1,21 @@
-import { useMessageInputContext } from '../../context';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import {useMessageInputContext} from '../../context';
+import {StyleSheet, View} from 'react-native';
 import {ImageUploadPreview} from '../ImageUploadPreview';
 import InputBar from '../InputBar/InputBar';
+import {FileUploadPreview} from '../FileUploadPreview';
 
-
-const MessageInput = ()=>{
-  const context = useMessageInputContext();
-  console.log('context: ', context);
+const MessageInput = () => {
+  const {imagePreviewVisible, filePreviewVisible} = useMessageInputContext();
 
   return (
     <View style={styles.container}>
       <View>
         <InputBar />
       </View>
-      <ImageUploadPreview />
+      {imagePreviewVisible && <ImageUploadPreview />}
+      {filePreviewVisible && <FileUploadPreview />}
     </View>
-  )
+  );
 };
 
 
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    width: '100%',
     // backgroundColor: '#1F1F1F',
   },
 });

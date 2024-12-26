@@ -1,11 +1,10 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React from 'react';
-import { UserProfile } from '../UserProfile';
-import {View} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {ChatListScreen, ChatScreen} from '../../../pages/UIKitScreen';
+import {UserProfile} from '../UserProfile';
+import {StyleSheet, View} from 'react-native';
+import {ChatListScreen} from '@/pages/UIKitScreen';
+import {DocScreen} from '@/pages/UIKitScreen/DocScreen';
 
 const Tab = createBottomTabNavigator();
 function TabBar() {
@@ -31,7 +30,7 @@ function TabBar() {
         />
         <Tab.Screen
           name="Docs"
-          component={ChatScreen}
+          component={DocScreen}
           options={{
             tabBarLabel: 'Docs',
             tabBarIcon: ({ color, size }) => (

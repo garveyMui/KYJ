@@ -8,11 +8,15 @@ import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import store from './src/store';
 import React from'react';
+import {WebSocketProvider} from './src/components/context/SocketContext';
+import {AuthGuard} from 'src/components/functional/AuthGuard';
 
 const RootComponent = () => {
   return (
     <Provider store={store}>
-      <App />
+      <WebSocketProvider>
+          <App />
+      </WebSocketProvider>
     </Provider>
     );
 };

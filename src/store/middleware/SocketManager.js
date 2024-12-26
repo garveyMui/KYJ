@@ -1,4 +1,3 @@
-
 // 创建一个简单的中间件来处理 WebSocket
 import {applyMiddleware, createStore} from 'redux';
 

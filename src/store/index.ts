@@ -1,9 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import messagesReducer from './modules/Messages';
 import socketStatusReducer from './modules/Socket';
 import chatObjectReducer from './modules/ChatObject.ts';
 import conversationReducer from './modules/Conversation';
-import thunk from 'redux-thunk';
+import userReducer from './modules/User';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ const store = configureStore({
     socket: socketStatusReducer,
     chatObject: chatObjectReducer,
     conversation: conversationReducer,
+    user: userReducer,
   },
 });
 

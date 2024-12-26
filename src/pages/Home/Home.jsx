@@ -1,15 +1,14 @@
 import React from 'react';
-import { View, Text, Button, SafeAreaView, StyleSheet } from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import {TabBar} from '../../components/interface/TabBar';
-import {Icon} from '@ant-design/react-native';
-import {UserProfile} from '../../components/interface/UserProfile';
+import HomeHeader from '@/components/interface/HomeHeader/HomeHeader';
 
 // Define the HomeScreen component
 function Home({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/*<TabBar />*/}
+      <HomeHeader title="Home" />
       <TabBar />
     </SafeAreaView>
   );

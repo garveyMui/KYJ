@@ -1,21 +1,21 @@
-
 import {createSlice} from '@reduxjs/toolkit';
+
 const ChatObjectSlice = createSlice({
-    name: 'ChatObject',
-    initialState: {
-        id: 'initial_id',
-        name: 'user_name',
-        avatar: 'avatar',
-        conversationId: null,
+  name: 'ChatObject',
+  initialState: {
+    id: 'initial_id',
+    name: 'user_name',
+    avatar: 'avatar',
+    conversationId: null,
+  },
+  reducers: {
+    setChatObject: (state, action) => {
+      state.id = action.payload.id;
+      state.name = action.payload.name;
+      state.avatar = action.payload.avatar;
+      state.conversationId = action.payload.id;
     },
-    reducers: {
-        setChatObject: (state, action) => {
-            state.id = action.payload.id;
-            state.name = action.payload.name;
-            state.avatar = action.payload.avatar;
-            state.conversationId = action.payload.id;
-        },
-    },
+  },
 });
 
 interface ChatObject {
