@@ -5,8 +5,11 @@ import {UserProfile} from '../UserProfile';
 import {StyleSheet, View} from 'react-native';
 import {ChatListScreen} from '@/pages/UIKitScreen';
 import {DocScreen} from '@/pages/UIKitScreen/DocScreen';
+import {ContactsScreen} from '@/pages/UIKitScreen/ContactsScreen';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator({
+
+});
 function TabBar() {
   return (
     <View style={styles.container}>
@@ -15,6 +18,22 @@ function TabBar() {
         screenOptions={{
           activeTintColor: '#e91e63',
           size: 10,
+          headerStyle: {
+            height: 40, // Adjust header height
+            backgroundColor: '#f8f8f8', // Example background color
+            paddingTop: 0, // Adjust top padding
+            marginTop: 0,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          },
+          headerTitleStyle: {
+            fontSize: 20, // Adjust font size
+            fontWeight: 'bold', // Optional: change font weight
+            marginTop: -15,
+            paddingTop: 0,
+            textAlign: 'center',
+            lineHeight: 20,
+          },
         }}
       >
         <Tab.Screen
@@ -32,6 +51,7 @@ function TabBar() {
           name="Docs"
           component={DocScreen}
           options={{
+            headerShown: false,
             tabBarLabel: 'Docs',
             tabBarIcon: ({ color, size }) => (
               // <MaterialCommunityIcons name="account-box-multiple-outline" color={color} size={size} />
@@ -42,7 +62,7 @@ function TabBar() {
         />
         <Tab.Screen
           name="Contacts"
-          component={UserProfile}
+          component={ContactsScreen}
           options={{
             tabBarLabel: 'Contacts',
             tabBarIcon: ({ color, size }) => (

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {IRouterParams} from '../../../interface';
 import {Dimensions, Keyboard, StyleSheet, View} from 'react-native';
 import {Docs} from '../../../components/interface/Docs';
+import {DocsContextProvider} from '@/components/context/DocsContext';
 
 const windowHeight = Dimensions.get('window').height;
 export const DocScreen = ({navigation}: IRouterParams) => {
@@ -11,37 +12,11 @@ export const DocScreen = ({navigation}: IRouterParams) => {
   const navigateToChatSetting = () => {
     navigation.navigate('ChatSetting');
   };
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
-
-  const handleKeyboardWillShow = event => {
-    setKeyboardHeight(event.endCoordinates.height);
-  };
-
-  const handleKeyboardWillHide = () => {
-    setKeyboardHeight(0);
-  };
-  useEffect(() => {
-    const keyboardWillShowSubscription = Keyboard.addListener(
-      'keyboardWillShow',
-      handleKeyboardWillShow,
-    );
-    const keyboardWillHideSubscription = Keyboard.addListener(
-      'keyboardWillHide',
-      handleKeyboardWillHide,
-    );
-
-    return () => {
-      keyboardWillShowSubscription.remove();
-      keyboardWillHideSubscription.remove();
-    };
-  }, []);
-
-
   return (
     <View style={styles.container}>
-      {/*<ChatContextProvider>*/}
+      <DocsContextProvider>
         <Docs navigation={navigation} />
-      {/*</ChatContextProvider>*/}
+      </DocsContextProvider>
     </View>
   );
 };

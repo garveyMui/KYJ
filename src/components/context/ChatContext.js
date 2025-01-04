@@ -49,8 +49,8 @@ export const ChatContextProvider = ({children}) => {
     <ChatContext.Provider value={chatContext}>
       {children}
     </ChatContext.Provider>
-  )
-}
+  );
+};
 
 export const useChatContext = () => {
   return useContext(ChatContext);

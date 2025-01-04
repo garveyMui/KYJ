@@ -25,7 +25,7 @@ const HomeHeader = ({ title }) => {
 
 const styles = {
   header: {
-    height: 60,
+    height: 35,
     width: '100%',
     backgroundColor: '#3498db',
     flexDirection: 'row',

@@ -3,7 +3,7 @@ import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import { LoginUsingStorageInfo } from './src/initApp';
 import {Home as HomeScreen} from './src/pages/Home';
-import {ChatListScreen, ChatScreen} from './src/pages/UIKitScreen';
+import {ChatListScreen, ChatScreen, ChatSettingScreen} from './src/pages/UIKitScreen';
 import {Login as LoginScreen} from './src/pages/Login';
 import {DocScreen} from '@/pages/UIKitScreen/DocScreen';
 import {AuthGuard} from '@/components/functional/AuthGuard';
@@ -31,7 +31,7 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{headerShown: true, gestureEnabled: true}}
+          options={{headerShown: false, gestureEnabled: true}}
         />
         <Stack.Screen
           name="Chat"
@@ -64,11 +64,11 @@ function App(): React.JSX.Element {
         {/*  component={ChatScreen}*/}
         {/*  options={{headerShown: true, gestureEnabled: true}}*/}
         {/*/>*/}
-        {/*<Stack.Screen*/}
-        {/*  name="ChatSetting"*/}
-        {/*  component={ChatScreen}*/}
-        {/*  options={{headerShown: true, gestureEnabled: true}}*/}
-        {/*/>*/}
+        <Stack.Screen
+          name="ChatSetting"
+          component={ChatSettingScreen}
+          options={{headerShown: true, gestureEnabled: true}}
+        />
         {/*<Stack.Screen*/}
         {/*  name="About"*/}
         {/*  component={ChatScreen}*/}

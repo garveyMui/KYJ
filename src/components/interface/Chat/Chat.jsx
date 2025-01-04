@@ -3,7 +3,7 @@ import React from 'react';
 import {IRouterParams} from '@/interface';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../store';
+import {RootState} from '@/store';
 import {MessageList} from '../MessageList';
 import {ChatHeader} from '../ChatHeader';
 import {MessageInput} from '../MessageInput';
@@ -17,17 +17,11 @@ export const Chat = ({ navigation }: IRouterParams) => {
   const navigateToChatSetting = () => {
     navigation.navigate('ChatSetting');
   };
-  // const [keyboardHeight, setKeyboardHeight] = useState(0);
   const {
-    keyboardHeight,
-    setKeyboardHeight,
     contentOffset,
-    setContentOffset,
     setInputHeight,
     setContentHeight,
-    contentHeight,
   } = useChatContext();
-  console.log('keyboardHeight', keyboardHeight);
 
   const {id: sender, name, avatar} = useSelector((state: RootState) => state.chatObject);
   const {conversationId} = useSelector((state: RootState) => state.chatObject);
@@ -36,14 +30,14 @@ export const Chat = ({ navigation }: IRouterParams) => {
     name,
     avatar,
   };
-  const handleInputLayout = (event) => {
-    const {height} = event.nativeEvent.layout;
-    setInputHeight(height);
-  };
-  const handleContentLayout = (event) => {
-    const {height} = event.nativeEvent.layout;
-    setContentHeight(height);
-  };
+  // const handleInputLayout = (event) => {
+  //   const {height} = event.nativeEvent.layout;
+  //   setInputHeight(height);
+  // };
+  // const handleContentLayout = (event) => {
+  //   const {height} = event.nativeEvent.layout;
+  //   setContentHeight(height);
+  // };
   return (
     <View style={styles.container}>
       <View style={{zIndex: 100}}>
@@ -55,12 +49,15 @@ export const Chat = ({ navigation }: IRouterParams) => {
       </View>
       <View
         style={[styles.contentContainer, {bottom: contentOffset}]}
-        onLayout={handleContentLayout}
+        // onLayout={handleContentLayout}
       >
         <View style={styles.messagesListContainer}>
           <MessageList conversationId={conversationId} />
         </View>
-        <View style={[styles.inputContainer, {bottom: 0}]} onLayout={handleInputLayout}>
+        <View
+          style={[styles.inputContainer, {bottom: 0}]}
+          // onLayout={handleInputLayout}
+          >
           <MessageInputProvider >
             <MessageInput />
           </MessageInputProvider>

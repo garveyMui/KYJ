@@ -4,8 +4,11 @@ import {IRouterParams} from '../../../interface';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
-import {ChatHeader} from '../ChatHeader';
+import {DocsHeader} from '../DocsHeader';
 import {DocsList} from '../DocsList';
+import {AutoCompleteInput} from '../AutoCompleteInput';
+import {DocsInputProvider} from '@/components/context';
+import {useDocsContext} from '@/components/context/DocsContext';
 
 const windowHeight = Dimensions.get('window').height;
 export const Docs = ({ navigation }: IRouterParams) => {
@@ -15,21 +18,10 @@ export const Docs = ({ navigation }: IRouterParams) => {
   const navigateToChatSetting = () => {
     navigation.navigate('ChatSetting');
   };
-  // const [keyboardHeight, setKeyboardHeight] = useState(0);
-  // const {
-  //   keyboardHeight,
-  //   setKeyboardHeight,
-  //   contentOffset,
-  //   setContentOffset,
-  //   setInputHeight,
-  //   setContentHeight,
-  //   contentHeight,
-  // } = useChatContext();
-  const keyboardHeight = 0;
-  const contentOffset = 0;
-  console.log('keyboardHeight', keyboardHeight);
-  const [contentHeight, setContentHeight] = useState(500);
-  const [inputHeight, setInputHeight] = useState(10);
+  const {
+    contentOffset,
+  } = useDocsContext();
+
   const {id: sender, name, avatar} = useSelector((state: RootState) => state.chatObject);
   const {conversationId} = useSelector((state: RootState) => state.chatObject);
   const chatObject = {
@@ -37,18 +29,11 @@ export const Docs = ({ navigation }: IRouterParams) => {
     name: 'ChatGPT',
     avatar,
   };
-  const handleInputLayout = (event) => {
-    const {height} = event.nativeEvent.layout;
-    setInputHeight(height);
-  };
-  const handleContentLayout = (event) => {
-    const {height} = event.nativeEvent.layout;
-    setContentHeight(height);
-  };
+
   return (
     <View style={styles.container}>
       <View style={{zIndex: 100}}>
-        <ChatHeader
+        <DocsHeader
           navigateBack={navigateBack}
           navigateToChatSetting={navigateToChatSetting}
           chatObject={chatObject}
@@ -56,16 +41,15 @@ export const Docs = ({ navigation }: IRouterParams) => {
       </View>
       <View
         style={[styles.contentContainer, {bottom: contentOffset}]}
-        onLayout={handleContentLayout}
       >
         <View style={styles.messagesListContainer}>
           <DocsList conversationId={conversationId} />
         </View>
-        {/*<View style={[styles.inputContainer, {bottom: 0}]} onLayout={handleInputLayout}>*/}
-        {/*  <MessageInputProvider >*/}
-        {/*    <MessageInput />*/}
-        {/*  </MessageInputProvider>*/}
-        {/*</View>*/}
+        <View style={[styles.inputContainer, {bottom: 0}]} >
+          <DocsInputProvider>
+            <AutoCompleteInput />
+          </DocsInputProvider>
+        </View>
       </View>
     </View>
   );

@@ -1,0 +1,159 @@
+[
+  {
+    "contactId": "abc123",
+    "userId": "user456",
+    "name": "Alice Smith",
+    "nickname": "Ali",
+    "avatarUrl": "https://example.com/avatar/alice.jpg",
+    "phoneNumbers": [
+      { "type": "mobile", "number": "+11234567890" }
+    ],
+    "emailAddresses": [],
+    "tags": ["friend"],
+    "status": {
+      "online": false,
+      "lastSeen": "2025-01-02T14:30:00Z",
+      "statusMessage": "Offline"
+    },
+    "customFields": {
+      "birthday": "1995-12-10",
+      "notes": "Loves hiking and photography"
+    },
+    "addedAt": "2024-01-01T10:00:00Z",
+    "mutualFriendsCount": 5,
+    "settings": {
+      "muteNotifications": false,
+      "favorite": false
+    },
+    "privacySettings": {
+      "shareLastSeen": true,
+      "shareStatusMessage": false
+    }
+  },
+  {
+    "contactId": "def456",
+    "userId": "user789",
+    "name": "Bob Johnson",
+    "nickname": "Bobby",
+    "avatarUrl": "https://example.com/avatar/bob.jpg",
+    "phoneNumbers": [
+      { "type": "work", "number": "+11234567891" },
+      { "type": "home", "number": "+11234567892" }
+    ],
+    "emailAddresses": ["bob.johnson@example.com"],
+    "tags": ["coworker"],
+    "status": {
+      "online": true,
+      "lastSeen": null,
+      "statusMessage": "Available for a call"
+    },
+    "customFields": {
+      "birthday": "1988-07-22",
+      "notes": "Works in the IT department"
+    },
+    "addedAt": "2024-05-12T15:45:00Z",
+    "mutualFriendsCount": 3,
+    "settings": {
+      "muteNotifications": true,
+      "favorite": true
+    },
+    "privacySettings": {
+      "shareLastSeen": false,
+      "shareStatusMessage": true
+    }
+  },
+  {
+    "contactId": "ghi789",
+    "userId": "user012",
+    "name": "Catherine Lee",
+    "nickname": "Cathy",
+    "avatarUrl": "https://example.com/avatar/catherine.jpg",
+    "phoneNumbers": [
+      { "type": "mobile", "number": "+11234567893" }
+    ],
+    "emailAddresses": ["cathy.lee@example.com"],
+    "tags": ["family"],
+    "status": {
+      "online": false,
+      "lastSeen": "2025-01-01T22:00:00Z",
+      "statusMessage": "Busy with family"
+    },
+    "customFields": {
+      "birthday": "1990-11-15",
+      "notes": "Enjoys baking and gardening"
+    },
+    "addedAt": "2024-03-18T09:20:00Z",
+    "mutualFriendsCount": 8,
+    "settings": {
+      "muteNotifications": false,
+      "favorite": true
+    },
+    "privacySettings": {
+      "shareLastSeen": true,
+      "shareStatusMessage": false
+    }
+  },
+  {
+    "contactId": "jkl012",
+    "userId": "user345",
+    "name": "David Brown",
+    "nickname": "Dave",
+    "avatarUrl": "https://example.com/avatar/david.jpg",
+    "phoneNumbers": [
+      { "type": "mobile", "number": "+11234567894" }
+    ],
+    "emailAddresses": ["david.brown@example.com"],
+    "tags": ["gym buddy"],
+    "status": {
+      "online": true,
+      "lastSeen": null,
+      "statusMessage": "At the gym"
+    },
+    "customFields": {
+      "birthday": "1992-05-30",
+      "notes": "Meets every Wednesday at the gym"
+    },
+    "addedAt": "2024-07-09T18:15:00Z",
+    "mutualFriendsCount": 4,
+    "settings": {
+      "muteNotifications": true,
+      "favorite": false
+    },
+    "privacySettings": {
+      "shareLastSeen": false,
+      "shareStatusMessage": true
+    }
+  },
+  {
+    "contactId": "mno345",
+    "userId": "user678",
+    "name": "Emma Watson",
+    "nickname": "Em",
+    "avatarUrl": "https://example.com/avatar/emma.jpg",
+    "phoneNumbers": [
+      { "type": "mobile", "number": "+11234567895" },
+      { "type": "work", "number": "+11234567896" }
+    ],
+    "emailAddresses": ["emma.watson@example.com"],
+    "tags": ["neighbor"],
+    "status": {
+      "online": false,
+      "lastSeen": "2025-01-02T09:00:00Z",
+      "statusMessage": "Running errands"
+    },
+    "customFields": {
+      "birthday": "1985-03-12",
+      "notes": "Lives next door"
+    },
+    "addedAt": "2024-11-20T12:30:00Z",
+    "mutualFriendsCount": 2,
+    "settings": {
+      "muteNotifications": false,
+      "favorite": false
+    },
+    "privacySettings": {
+      "shareLastSeen": true,
+      "shareStatusMessage": true
+    }
+  }
+]

@@ -1,7 +1,7 @@
-import {request} from './request';
+import {request} from '@/utils/request';
 
 export async function logginAPI(formData) {
-  return await request({
+  return request({
     url: '/api/user/login',
     method: 'POST',
     data: formData,
@@ -9,7 +9,7 @@ export async function logginAPI(formData) {
 }
 
 export async function getProfileAPI() {
-  return await request({
+  return request({
     url: '/api/user/profile',
     method: 'GET',
   });

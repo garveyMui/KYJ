@@ -14,30 +14,7 @@ export const ChatScreen = ({navigation}: IRouterParams) => {
   const navigateToChatSetting = () => {
     navigation.navigate('ChatSetting');
   };
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
-  const handleKeyboardWillShow = event => {
-    setKeyboardHeight(event.endCoordinates.height);
-  };
-
-  const handleKeyboardWillHide = () => {
-    setKeyboardHeight(0);
-  };
-  useEffect(() => {
-    const keyboardWillShowSubscription = Keyboard.addListener(
-      'keyboardWillShow',
-      handleKeyboardWillShow,
-    );
-    const keyboardWillHideSubscription = Keyboard.addListener(
-      'keyboardWillHide',
-      handleKeyboardWillHide,
-    );
-
-    return () => {
-      keyboardWillShowSubscription.remove();
-      keyboardWillHideSubscription.remove();
-    };
-  }, []);
   const {
     id: sender,
     name,
@@ -51,7 +28,6 @@ export const ChatScreen = ({navigation}: IRouterParams) => {
   };
   return (
     <View style={styles.container}>
-
       <ChatContextProvider>
         <Chat navigation={navigation} />
       </ChatContextProvider>
