@@ -7,7 +7,10 @@ export const ChatContextProvider = ({children}) => {
 
   const messageListRef = useRef(null);
   const handleScrollToEnd = () => {
-    messageListRef.current?.scrollToEnd({animated: true});
+    const timer = setTimeout(() => {
+      messageListRef.current?.scrollToEnd({animated: true});
+      console.log('scrollToEnd');
+    }, 10); // 延迟执行，确保布局完成
   };
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -15,18 +18,20 @@ export const ChatContextProvider = ({children}) => {
   const [inputHeight, setInputHeight] = useState(300);
   const [contentHeight, setContentHeight] = useState(0);
   useEffect(() => {
-    function onKeyboardDidShow(e) { // Remove type here if not using TypeScript
+    function onKeyboardWillShow(e) { // Remove type here if not using TypeScript
       setKeyboardHeight(e.endCoordinates.height);
       setContentOffset(e.endCoordinates.height);
+      // handleScrollToEnd();
     }
 
-    function onKeyboardDidHide() {
+    function onKeyboardWillHide() {
       setKeyboardHeight(0);
       setContentOffset(0);
+      // handleScrollToEnd();
     }
 
-    const showSubscription = Keyboard.addListener('keyboardWillShow', onKeyboardDidShow);
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    const showSubscription = Keyboard.addListener('keyboardWillShow', onKeyboardWillShow);
+    const hideSubscription = Keyboard.addListener('keyboardWillHide', onKeyboardWillHide);
     return () => {
       showSubscription.remove();
       hideSubscription.remove();

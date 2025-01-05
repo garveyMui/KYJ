@@ -11,6 +11,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {fetchLogin, setToken} from '@/store/modules/User';
+import {logginAPI, registerAPI} from '@/apis/auth';
 
 export const Login = ({navigation}) => {
   const [username, setUsername] = useState('admin');
@@ -19,18 +20,10 @@ export const Login = ({navigation}) => {
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post(
-        'http://127.0.0.1:3000/auth/register',
-        {
-          username,
-          password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const response = await registerAPI({
+        username,
+        password,
+      });
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -40,18 +33,11 @@ export const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       dispatch(fetchLogin({ username, password }));
-      const response = await axios.post(
-        'http://127.0.0.1:3000/auth/login',
+      const response = await logginAPI(
         {
           username,
           password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
         },
       );
       if (response.status === 200) {

@@ -1,16 +1,23 @@
 import {request} from '@/utils/request';
 
-export async function logginAPI(formData) {
+export async function getProfileAPI(uid) {
   return request({
-    url: '/api/user/login',
-    method: 'POST',
-    data: formData,
+    url: `/v1/user/profile?user_id=${uid}`,
+    method: 'GET',
   });
 }
 
-export async function getProfileAPI() {
+export async function getSettingsAPI() {
   return request({
-    url: '/api/user/profile',
+    url: `/v1/user/settings`,
     method: 'GET',
+  });
+}
+
+export async function updateSettingsAPI(settings) {
+  return request({
+    url: `/v1/user/settings`,
+    method: 'PUT',
+    data: settings,
   });
 }

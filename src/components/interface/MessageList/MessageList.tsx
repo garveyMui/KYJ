@@ -27,6 +27,7 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
       contentContainerStyle={{
         flexGrow: 1,
       }}
+      onContentSizeChange={() => handleScrollToEnd()}
       data={chatRecords}
       renderItem={({item}) => (
         <TouchableWithoutFeedback onPress={() => {}}>
@@ -41,6 +42,7 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
 const styles = StyleSheet.create({
   container: {
     // height: '89%',
+    flex: 1,
     width: '100%',
     // backgroundColor: '#1F1F1F',
   },

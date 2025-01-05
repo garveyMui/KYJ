@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Chat} from '../../../components/interface/Chat';
 import {IRouterParams} from '../../../interface';
-import {Dimensions, Keyboard, StyleSheet, View} from 'react-native';
+import {Dimensions, Keyboard, StatusBar, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {ChatContextProvider} from '../../../components/context';
@@ -28,6 +28,11 @@ export const ChatScreen = ({navigation}: IRouterParams) => {
   };
   return (
     <View style={styles.container}>
+      <StatusBar
+        translucent={false} // 不透明
+        backgroundColor="#ffffff" // 状态栏背景颜色（iOS 会通过 SafeAreaView 设置）
+        barStyle="dark-content" // 状态栏文字和图标颜色
+      />
       <ChatContextProvider>
         <Chat navigation={navigation} />
       </ChatContextProvider>

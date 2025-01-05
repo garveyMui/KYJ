@@ -36,7 +36,12 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Chat"
           component={ChatScreen}
-          options={{headerShown: true, gestureEnabled: true}}
+          options={{
+            headerShown: false,
+            gestureEnabled: true,
+            statusBarTranslucent: false,
+            statusBarBackgroundColor: 'white',
+        }}
         />
         <Stack.Screen
           name="Login"

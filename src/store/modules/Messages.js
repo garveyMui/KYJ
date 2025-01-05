@@ -1,5 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import {postMessageAPI} from '@/apis/messages';
+import {webSocket} from '@/utils/webSocket';
+import {postAttachAPI} from '@/apis/attachments';
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -21,65 +24,71 @@ const messagesSlice = createSlice({
   },
 });
 
-const postMessage = (message, callbacks, webSocket) => {
-  webSocket.send(JSON.stringify(message));
-  const URL = 'http://localhost:4023/message/' + message.id;
-  return async (dispatch) => {
-    try {
-      dispatch(addMessage(message));
-      const formData = new FormData();
-      formData.append('message', message);
-      let response = null;
-      let result = null;
-      switch(message.content.type){
-        case 'image':
-          formData.append('image', {
-            uri: message.content.uri,
-            type: 'image/jpeg',
-            name: message.content.fileName,
-          });
-          response = await axios.post(URL, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          break;
-        case 'file':
-          formData.append('file', {
-            uri: message.content.uri,
-            type: 'file/pdf',
-            name: message.content.fileName,
-          });
-          response = await axios.post(URL, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          result = await response.json();
-          break;
-        case 'text':
-          webSocket.send(JSON.stringify(message));
-          break;
-          default:
-            console.error(message);
-            break;
-      }
-      // 如果有回调函数，则执行它们
-      callbacks.forEach(callback => callback());
-      return result.url;
-    } catch (error) {
-      throw error; // 抛出错误，以便可以在外部捕获
-    }
+const postMessage = (message, callbacks) => {
+  return async dispatch => {
+    dispatch(addMessage(message));
+    callbacks.forEach(callback => callback());
+    await _postMessage(message);
   };
 };
 
+const _postMessage = async message => {
+  try {
+    const formData = new FormData();
+    formData.append('message', message);
+    let response = null;
+    let result = null;
+    switch (message.content.type) {
+      case 'text':
+        await postMessageAPI(JSON.stringify(message));
+        break;
+      case 'image':
+        formData.append('image', {
+          uri: message.content.uri,
+          type: 'image/jpeg',
+          name: message.content.fileName,
+        });
+        response = await postAttachAPI(formData);
+        await postMessageAPI(
+          JSON.stringify({
+            ...message,
+            content: {
+              ...message.content,
+              url: response.data.url,
+            },
+          }),
+        );
+        break;
+      case 'file':
+        formData.append('file', {
+          uri: message.content.uri,
+          type: message.content.mimeType || 'file/pdf',
+          name: message.content.fileName,
+        });
+        response = await postAttachAPI(formData);
+        await postMessageAPI(
+          JSON.stringify({
+            ...message,
+            content: {
+              ...message.content,
+              url: response.data.url,
+            },
+          }),
+        );
+        result = response.json();
+        break;
+      default:
+        console.error('Unsupported message type:', message.content.type);
+        break;
+    }
+    return result.url;
+  } catch (error) {
+    throw error; // 抛出错误，以便可以在外部捕获
+  }
+};
 
-export const {
-  addMessage,
-  removeMessage,
-  setMessage,
-} = messagesSlice.actions;
+export const {addMessage, removeMessage, setMessage} = messagesSlice.actions;
 
-export { postMessage };
+export {postMessage};
 
 export default messagesSlice.reducer;
