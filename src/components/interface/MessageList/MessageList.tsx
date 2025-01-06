@@ -2,8 +2,9 @@ import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {MessageItem} from '../MessageItem';
 import {useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import {RootState} from '../../../store';
+import {RootState} from '@/store';
 import {useChatContext} from '../../context';
+import {Message} from '@/store/modules/Messages.ts'
 
 const MessageList: React.FC<Props> = ({conversationId}) => {
   const {messagesList} = useSelector((state: RootState) => state.messages);
@@ -52,17 +53,5 @@ interface Props {
   conversationId: string | null;
 }
 
-interface Message {
-  messageId: string;
-  conversationId: string | null;
-  sender: {
-    id: string;
-    name: string;
-  };
-  content: {
-    text: string;
-    type: string;
-  };
-}
 
 export {MessageList};

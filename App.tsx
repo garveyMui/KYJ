@@ -8,7 +8,7 @@ import {Login as LoginScreen} from './src/pages/Login';
 import {DocScreen} from '@/pages/UIKitScreen/DocScreen';
 import {AuthGuard} from '@/components/functional/AuthGuard';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchUserInfo} from '@/store/modules/User';
+import {fetchUserInfo} from '@/store/modules/User.ts';
 import {RootState} from '@/store';
 import {Setting} from '@/pages/Setting';
 

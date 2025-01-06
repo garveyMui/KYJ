@@ -2,6 +2,7 @@ import React from 'react';
 import {SafeAreaView, StyleSheet} from 'react-native';
 import {TabBar} from '@/components/interface/TabBar';
 import HomeHeader from '@/components/interface/HomeHeader/HomeHeader';
+import {HomeContextProvider} from '@/components/context/HomeContext';
 
 // Define the HomeScreen component
 function Home({ navigation }) {

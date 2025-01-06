@@ -22,7 +22,7 @@ import type {IRouterParams} from '../../interface';
 import {LogoutChat} from '../../initApp';
 
 import {Avatar} from '@tencentcloud/chat-uikit-react-native';
-import {clearUserInfo} from '@/store/modules/User';
+import {clearUserInfo} from '@/store/modules/User.ts';
 import {useDispatch} from 'react-redux';
 
 interface IConfig {

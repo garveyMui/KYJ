@@ -1,159 +1,158 @@
 [
   {
-    "contactId": "abc123",
-    "userId": "user456",
-    "name": "Alice Smith",
-    "nickname": "Ali",
-    "avatarUrl": "https://example.com/avatar/alice.jpg",
+    "contactId": "contact001",
+    "user": {
+      "id": "user001",
+      "name": "Alice",
+      "avatar": "https://example.com/avatar/alice.png"
+    },
+    "nickname": "Alice",
     "phoneNumbers": [
-      { "type": "mobile", "number": "+11234567890" }
+      {
+        "type": "mobile",
+        "number": "+1234567890"
+      }
     ],
-    "emailAddresses": [],
-    "tags": ["friend"],
-    "status": {
-      "online": false,
-      "lastSeen": "2025-01-02T14:30:00Z",
-      "statusMessage": "Offline"
-    },
+    "emailAddresses": [
+      {
+        "type": "personal",
+        "email": "alice@example.com"
+      }
+    ],
+    "tags": ["friend", "work"],
     "customFields": {
-      "birthday": "1995-12-10",
-      "notes": "Loves hiking and photography"
+      "favoriteColor": "blue",
+      "birthday": "1990-01-01"
     },
-    "addedAt": "2024-01-01T10:00:00Z",
+    "addedAt": "2023-01-01T09:00:00Z",
+    "mutualFriendsCount": 3,
+    "settings": {
+      "muteNotifications": false,
+      "favorite": true
+    }
+  },
+  {
+    "contactId": "contact002",
+    "user": {
+      "id": "user002",
+      "name": "Bob",
+      "avatar": "https://example.com/avatar/bob.png"
+    },
+    "nickname": "Bob",
+    "phoneNumbers": [
+      {
+        "type": "mobile",
+        "number": "+1987654321"
+      }
+    ],
+    "emailAddresses": [
+      {
+        "type": "work",
+        "email": "bob@work.com"
+      }
+    ],
+    "tags": ["friend"],
+    "customFields": {
+      "hobby": "reading"
+    },
+    "addedAt": "2023-01-01T09:05:00Z",
+    "mutualFriendsCount": 2,
+    "settings": {
+      "muteNotifications": true,
+      "favorite": false
+    }
+  },
+  {
+    "contactId": "contact003",
+    "user": {
+      "id": "user003",
+      "name": "Charlie",
+      "avatar": "https://example.com/avatar/charlie.png"
+    },
+    "nickname": "Charlie",
+    "phoneNumbers": [
+      {
+        "type": "work",
+        "number": "+1345678901"
+      }
+    ],
+    "emailAddresses": [
+      {
+        "type": "personal",
+        "email": "charlie@example.com"
+      }
+    ],
+    "tags": ["friend", "colleague"],
+    "customFields": {
+      "workPosition": "Engineer"
+    },
+    "addedAt": "2023-01-01T09:10:00Z",
+    "mutualFriendsCount": 4,
+    "settings": {
+      "muteNotifications": false,
+      "favorite": true
+    }
+  },
+  {
+    "contactId": "contact004",
+    "user": {
+      "id": "user004",
+      "name": "David",
+      "avatar": "https://example.com/avatar/david.png"
+    },
+    "nickname": "David",
+    "phoneNumbers": [
+      {
+        "type": "mobile",
+        "number": "+1456789012"
+      }
+    ],
+    "emailAddresses": [
+      {
+        "type": "work",
+        "email": "david@work.com"
+      }
+    ],
+    "tags": ["colleague"],
+    "customFields": {
+      "company": "TechCorp"
+    },
+    "addedAt": "2023-01-01T09:15:00Z",
+    "mutualFriendsCount": 1,
+    "settings": {
+      "muteNotifications": true,
+      "favorite": false
+    }
+  },
+  {
+    "contactId": "contact005",
+    "user": {
+      "id": "user005",
+      "name": "Eve",
+      "avatar": "https://example.com/avatar/eve.png"
+    },
+    "nickname": "Eve",
+    "phoneNumbers": [
+      {
+        "type": "home",
+        "number": "+1578901234"
+      }
+    ],
+    "emailAddresses": [
+      {
+        "type": "other",
+        "email": "eve@anothermail.com"
+      }
+    ],
+    "tags": ["friend", "family"],
+    "customFields": {
+      "favoriteFood": "Pizza"
+    },
+    "addedAt": "2023-01-01T09:20:00Z",
     "mutualFriendsCount": 5,
     "settings": {
       "muteNotifications": false,
-      "favorite": false
-    },
-    "privacySettings": {
-      "shareLastSeen": true,
-      "shareStatusMessage": false
-    }
-  },
-  {
-    "contactId": "def456",
-    "userId": "user789",
-    "name": "Bob Johnson",
-    "nickname": "Bobby",
-    "avatarUrl": "https://example.com/avatar/bob.jpg",
-    "phoneNumbers": [
-      { "type": "work", "number": "+11234567891" },
-      { "type": "home", "number": "+11234567892" }
-    ],
-    "emailAddresses": ["bob.johnson@example.com"],
-    "tags": ["coworker"],
-    "status": {
-      "online": true,
-      "lastSeen": null,
-      "statusMessage": "Available for a call"
-    },
-    "customFields": {
-      "birthday": "1988-07-22",
-      "notes": "Works in the IT department"
-    },
-    "addedAt": "2024-05-12T15:45:00Z",
-    "mutualFriendsCount": 3,
-    "settings": {
-      "muteNotifications": true,
       "favorite": true
-    },
-    "privacySettings": {
-      "shareLastSeen": false,
-      "shareStatusMessage": true
-    }
-  },
-  {
-    "contactId": "ghi789",
-    "userId": "user012",
-    "name": "Catherine Lee",
-    "nickname": "Cathy",
-    "avatarUrl": "https://example.com/avatar/catherine.jpg",
-    "phoneNumbers": [
-      { "type": "mobile", "number": "+11234567893" }
-    ],
-    "emailAddresses": ["cathy.lee@example.com"],
-    "tags": ["family"],
-    "status": {
-      "online": false,
-      "lastSeen": "2025-01-01T22:00:00Z",
-      "statusMessage": "Busy with family"
-    },
-    "customFields": {
-      "birthday": "1990-11-15",
-      "notes": "Enjoys baking and gardening"
-    },
-    "addedAt": "2024-03-18T09:20:00Z",
-    "mutualFriendsCount": 8,
-    "settings": {
-      "muteNotifications": false,
-      "favorite": true
-    },
-    "privacySettings": {
-      "shareLastSeen": true,
-      "shareStatusMessage": false
-    }
-  },
-  {
-    "contactId": "jkl012",
-    "userId": "user345",
-    "name": "David Brown",
-    "nickname": "Dave",
-    "avatarUrl": "https://example.com/avatar/david.jpg",
-    "phoneNumbers": [
-      { "type": "mobile", "number": "+11234567894" }
-    ],
-    "emailAddresses": ["david.brown@example.com"],
-    "tags": ["gym buddy"],
-    "status": {
-      "online": true,
-      "lastSeen": null,
-      "statusMessage": "At the gym"
-    },
-    "customFields": {
-      "birthday": "1992-05-30",
-      "notes": "Meets every Wednesday at the gym"
-    },
-    "addedAt": "2024-07-09T18:15:00Z",
-    "mutualFriendsCount": 4,
-    "settings": {
-      "muteNotifications": true,
-      "favorite": false
-    },
-    "privacySettings": {
-      "shareLastSeen": false,
-      "shareStatusMessage": true
-    }
-  },
-  {
-    "contactId": "mno345",
-    "userId": "user678",
-    "name": "Emma Watson",
-    "nickname": "Em",
-    "avatarUrl": "https://example.com/avatar/emma.jpg",
-    "phoneNumbers": [
-      { "type": "mobile", "number": "+11234567895" },
-      { "type": "work", "number": "+11234567896" }
-    ],
-    "emailAddresses": ["emma.watson@example.com"],
-    "tags": ["neighbor"],
-    "status": {
-      "online": false,
-      "lastSeen": "2025-01-02T09:00:00Z",
-      "statusMessage": "Running errands"
-    },
-    "customFields": {
-      "birthday": "1985-03-12",
-      "notes": "Lives next door"
-    },
-    "addedAt": "2024-11-20T12:30:00Z",
-    "mutualFriendsCount": 2,
-    "settings": {
-      "muteNotifications": false,
-      "favorite": false
-    },
-    "privacySettings": {
-      "shareLastSeen": true,
-      "shareStatusMessage": true
     }
   }
 ]

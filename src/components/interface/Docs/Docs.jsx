@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 
 import {IRouterParams} from '../../../interface';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import {DocsHeader} from '../DocsHeader';
 import {DocsList} from '../DocsList';
 import {AutoCompleteInput} from '../AutoCompleteInput';
 import {DocsInputProvider} from '@/components/context';
 import {useDocsContext} from '@/components/context/DocsContext';
+import {useRoute} from '@react-navigation/native';
+import {setBottomTab} from '@/store/modules/BottomTab';
 
 const windowHeight = Dimensions.get('window').height;
 export const Docs = ({ navigation }: IRouterParams) => {
@@ -21,7 +23,6 @@ export const Docs = ({ navigation }: IRouterParams) => {
   const {
     contentOffset,
   } = useDocsContext();
-
   const {id: sender, name, avatar} = useSelector((state: RootState) => state.chatObject);
   const {conversationId} = useSelector((state: RootState) => state.chatObject);
   const chatObject = {
@@ -32,13 +33,6 @@ export const Docs = ({ navigation }: IRouterParams) => {
 
   return (
     <View style={styles.container}>
-      <View style={{zIndex: 100}}>
-        <DocsHeader
-          navigateBack={navigateBack}
-          navigateToChatSetting={navigateToChatSetting}
-          chatObject={chatObject}
-        />
-      </View>
       <View
         style={[styles.contentContainer, {bottom: contentOffset}]}
       >

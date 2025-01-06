@@ -6,7 +6,8 @@ import { IRouterParams } from '@/interface.ts';
 import { ChatObject, setChatObject } from '@/store/modules/ChatObject.ts';
 import { useDispatch } from 'react-redux';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import { setBottomTab} from '@/store/modules/BottomTab';
 
 const ChatRoute = () => {
   // <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
@@ -14,9 +15,9 @@ const ChatRoute = () => {
   // </View>
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const onPressConversation = (chatObject: ChatObject) => {
-    if (chatObject.id !== '-1') {
-      dispatch(setChatObject(chatObject));
+  const onPressConversation = (chatObject: ChatObject, conversationId:string) => {
+    if (chatObject.user.id !== '-1') {
+      dispatch(setChatObject({...chatObject, conversationId}));
     }
     navigation.navigate('Chat');
   };

@@ -1,12 +1,15 @@
 import {View, Text, FlatList, StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import React, { useState, useEffect } from 'react';
+import {useRoute} from '@react-navigation/native';
+import {setBottomTab} from '@/store/modules/BottomTab';
+import {Contact} from '@/store/modules/Contacts';
 
 export const ContactList = () => {
   const {contacts} = useSelector((state) => state.contacts);
-  const renderItem = ({ item }) => (
+  const renderItem: React.FC<{item: Contact}> = ({ item}) => (
     <View style={styles.item}>
-      <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.name}>{item.nickname}</Text>
     </View>
   );
   return (
@@ -14,7 +17,7 @@ export const ContactList = () => {
       <FlatList
         data={contacts}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.contactId}
       />
     </View>
   );

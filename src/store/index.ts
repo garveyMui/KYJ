@@ -1,10 +1,11 @@
 import {configureStore} from '@reduxjs/toolkit';
-import messagesReducer from './modules/Messages';
+import messagesReducer from './modules/Messages.ts';
 import socketStatusReducer from './modules/Socket';
 import chatObjectReducer from './modules/ChatObject.ts';
-import conversationReducer from './modules/Conversation';
-import userReducer from './modules/User';
-import contactsReducer from './modules/Contacts';
+import conversationReducer from './modules/Conversations.ts';
+import userReducer from './modules/User.ts';
+import contactsReducer from './modules/Contacts.ts';
+import BottomTabReducer from './modules/BottomTab';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     conversation: conversationReducer,
     user: userReducer,
     contacts: contactsReducer,
+    bottomTab: BottomTabReducer,
   },
 });
 

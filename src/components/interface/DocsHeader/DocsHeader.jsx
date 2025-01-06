@@ -4,59 +4,31 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal,
-  Dimensions,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 
 export const DocsHeader = ({ navigateBack, navigateToChatSetting, chatObject }) => {
-  const [visible, setVisible] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-  const dropdownButtonRef = useRef(null);
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
 
-  const toggleModal = () => {
-    if (!visible) {
-      dropdownButtonRef.current.measure(
-        (fx, fy, width, height, px, py) => {
-          setDropdownPosition({
-            top: py + height, // Position below the button
-            left: px,         // Align horizontally with the button
-          });
-          setVisible(true);
-        }
-      );
-    } else {
-      setVisible(false);
-    }
+  const toggleDropdown = () => {
+    setDropdownVisible(!isDropdownVisible);
   };
 
   const handleOptionSelect = (option) => {
     console.log('Selected Option:', option);
-    toggleModal();
+    setDropdownVisible(false); // Close dropdown after selection
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
-        <AntDesign name="arrowleft" size={24} color="#000" />
-      </TouchableOpacity>
-      <Image source={{ uri: chatObject.avatar }} style={styles.avatar} />
       <Text style={styles.username}>{chatObject.name}</Text>
-      <TouchableOpacity
-        ref={dropdownButtonRef}
-        onPress={toggleModal}
-        style={styles.dropdownButton}
-      >
+      <TouchableOpacity onPress={toggleDropdown} style={styles.dropdownButton}>
         <AntDesign name="down" size={24} color="#000" />
       </TouchableOpacity>
-      {visible && (
-        <View
-          style={[
-            styles.dropdownContainer,
-            { top: dropdownPosition.top, left: dropdownPosition.left },
-          ]}
-        >
+
+      {isDropdownVisible && (
+        <View style={styles.dropdownContainer}>
           <TouchableOpacity onPress={() => handleOptionSelect('chatgpt')}>
             <Text style={styles.dropdownOption}>ChatGPT</Text>
           </TouchableOpacity>
@@ -66,15 +38,13 @@ export const DocsHeader = ({ navigateBack, navigateToChatSetting, chatObject }) 
           <TouchableOpacity onPress={() => handleOptionSelect('chatglm')}>
             <Text style={styles.dropdownOption}>ChatGLM</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={toggleModal}>
+          <TouchableOpacity onPress={() => setDropdownVisible(false)}>
             <Text style={styles.dropdownOption}>Cancel</Text>
           </TouchableOpacity>
         </View>
       )}
-      <TouchableOpacity
-        onPress={navigateToChatSetting}
-        style={styles.settingButton}
-      >
+
+      <TouchableOpacity onPress={navigateToChatSetting} style={styles.settingButton}>
         <AntDesign name="setting" size={24} color="#000" />
       </TouchableOpacity>
     </View>
@@ -83,24 +53,12 @@ export const DocsHeader = ({ navigateBack, navigateToChatSetting, chatObject }) 
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: '#fff',
-  },
-  backButton: {
-    marginRight: 10,
-  },
-  backIcon: {
-    width: 24,
-    height: 24,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
   },
   username: {
     fontSize: 18,
@@ -114,12 +72,11 @@ const styles = StyleSheet.create({
   settingButton: {
     marginLeft: 'auto',
   },
-  settingIcon: {
-    width: 24,
-    height: 24,
-  },
   dropdownContainer: {
     position: 'absolute',
+    zIndex: 100,
+    top: 40, // Position dropdown below the button
+    left: 0,
     backgroundColor: '#fff',
     borderRadius: 8,
     elevation: 5, // For shadow on Android
@@ -128,6 +85,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 4,
     padding: 10,
+    width: 200, // Width of the dropdown menu
   },
   dropdownOption: {
     padding: 10,

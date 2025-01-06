@@ -6,11 +6,15 @@ import {StyleSheet, View} from 'react-native';
 import {ChatListScreen} from '@/pages/UIKitScreen';
 import {DocScreen} from '@/pages/UIKitScreen/DocScreen';
 import {ContactsScreen} from '@/pages/UIKitScreen/ContactsScreen';
+import {useRoute} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {setBottomTab} from '@/store/modules/BottomTab';
 
 const Tab = createBottomTabNavigator({
 
 });
 function TabBar() {
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -45,7 +49,13 @@ function TabBar() {
               // <MaterialCommunityIcons name="home" color={color} size={size} />
               <AntDesign name="message1" size={size} color={color} />
             ),
+            headerShown: false,
           }}
+          listeners={({navigation}) => ({
+            tabPress: (e) => {
+              dispatch(setBottomTab("Messenger"));
+            },
+          })}
         />
         <Tab.Screen
           name="Docs"
@@ -59,6 +69,11 @@ function TabBar() {
             ),
             tabBarBadge: 3,
           }}
+          listeners={({navigation}) => ({
+            tabPress: (e) => {
+              dispatch(setBottomTab("Docs"));
+            },
+          })}
         />
         <Tab.Screen
           name="Contacts"
@@ -69,7 +84,13 @@ function TabBar() {
               // <MaterialCommunityIcons name="account" color={color} size={size} />
               <AntDesign name="team" size={size} color={color} />
             ),
+            headerShown: false,
           }}
+          listeners={({navigation}) => ({
+            tabPress: (e) => {
+              dispatch(setBottomTab("Contacts"));
+            },
+          })}
         />
       </Tab.Navigator>
     </View>
