@@ -8,7 +8,6 @@ import {useChatContext} from './ChatContext';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import {Alert} from 'react-native';
-import {useSocketContext} from './SocketContext';
 
 // Create the context
 export const MessageInputContext = createContext();
@@ -43,8 +42,6 @@ export const MessageInputProvider = ({children}) => {
       Alert.alert('保存文件失败', error.message);
     }
   };
-  const {webSocketRef} = useSocketContext();
-  console.log('websocket: ', webSocketRef.current);
   const [imagePreviewVisible, setImagePreviewVisible] = useState(false);
   const [filePreviewVisible, setFilePreviewVisible] = useState(false);
   const [text, setText] = useState('');
@@ -157,7 +154,7 @@ export const MessageInputProvider = ({children}) => {
       () => {
         setText('');
       },
-    ], webSocketRef.current);
+    ]);
     console.log('actionCreator: ', actionCreator);
     dispatch(actionCreator);
     handleScrollToEnd();

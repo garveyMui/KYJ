@@ -11,10 +11,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchUserInfo} from '@/store/modules/User.ts';
 import {RootState} from '@/store';
 import {Setting} from '@/pages/Setting';
+import {useWebSocketManager} from '@/components/functional/MessageManager';
 
 // import { RootState } from './src/store';
 
 function App(): React.JSX.Element {
+  // 在根组件中初始化 WebSocket 连接
+  useWebSocketManager();
   const Stack = createNativeStackNavigator();
   const navigationRef = useNavigationContainerRef();
   const dispatch = useDispatch();
