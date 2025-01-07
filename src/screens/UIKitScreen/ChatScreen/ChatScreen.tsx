@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Chat} from '../../../components/interface/Chat';
+import {Chat} from '@/components/ui/Chat';
 import {IRouterParams} from '../../../interface';
 import {Dimensions, Keyboard, StatusBar, StyleSheet, View} from 'react-native';
 import {useSelector} from 'react-redux';

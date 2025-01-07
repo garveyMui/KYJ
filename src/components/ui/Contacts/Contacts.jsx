@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import {ContactList} from '@/components/interface/ContactList';
+import {ContactList} from '@/components/ui/ContactList';
 
 export const Contacts = () => {
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {Animated, Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
 import { ChatListProvider } from '@/components/context';
-import { ChatList } from '@/components/interface/ChatList';
+import { ChatList } from '@/components/ui/ChatList';
 import { IRouterParams } from '@/interface.ts';
 import { ChatObject, setChatObject } from '@/store/modules/ChatObject.ts';
 import { useDispatch } from 'react-redux';

@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {DocsHeader} from '@/components/interface/DocsHeader';
+import {DocsHeader} from '@/components/ui/DocsHeader';
 import {RootState} from '@/store';
 import avatarImage from '@/assets/avatar.jpg'
 
