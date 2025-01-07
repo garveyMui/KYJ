@@ -3,7 +3,7 @@ import {NavigationContainer, useNavigationContainerRef} from '@react-navigation/
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import { LoginUsingStorageInfo } from './src/initApp';
 import {Home as HomeScreen} from '@/screens/Home';
-import {ChatListScreen, ChatScreen, ChatSettingScreen} from '@/screens/UIKitScreen';
+import {ChatListScene, ChatScreen, ChatSettingScreen} from '@/screens/UIKitScreen';
 import {Login as LoginScreen} from '@/screens/Login';
 import {DocScreen} from '@/screens/UIKitScreen/DocScreen';
 import {AuthGuard} from '@/components/functional/AuthGuard';
@@ -12,6 +12,7 @@ import {fetchUserInfo} from '@/store/modules/User.ts';
 import {RootState} from '@/store';
 import {Setting} from '@/screens/Setting';
 import {useWebSocketManager} from '@/components/functional/MessageManager';
+import {AppNavigator} from '@/navigations/AppNavigator';
 
 // import { RootState } from './src/store';
 
@@ -26,69 +27,7 @@ function App(): React.JSX.Element {
   }, [dispatch]);
   const {userInfo} = useSelector((state: RootState) => state.user);
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{headerShown: true}}>
-        {/*<Stack.Screen name="Login" component={LoginScreen} />*/}
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{headerShown: false, gestureEnabled: true}}
-        />
-        <Stack.Screen
-          name="Chat"
-          component={ChatScreen}
-          options={{
-            headerShown: false,
-            gestureEnabled: true,
-            statusBarTranslucent: false,
-            statusBarBackgroundColor: 'white',
-        }}
-        />
-        <Stack.Screen
-          name="Login"
-          // component={LoginScreen}
-          options={{headerShown: true, gestureEnabled: true}}>
-          {(props: any) => (
-            <AuthGuard navigation={props.navigation}>
-              <LoginScreen {...props} />
-            </AuthGuard>
-          )
-          }
-        </Stack.Screen>
-        <Stack.Screen
-          name="Docs"
-          component={DocScreen}
-          options={{headerShown: true, gestureEnabled: true}}
-        />
-        <Stack.Screen
-          name="Messenger"
-          component={ChatListScreen}
-          options={{headerShown: true, gestureEnabled: true}}
-        />
-        {/*<Stack.Screen*/}
-        {/*  name="Contacts"*/}
-        {/*  component={ChatScreen}*/}
-        {/*  options={{headerShown: true, gestureEnabled: true}}*/}
-        {/*/>*/}
-        <Stack.Screen
-          name="ChatSetting"
-          component={ChatSettingScreen}
-          options={{headerShown: true, gestureEnabled: true}}
-        />
-        {/*<Stack.Screen*/}
-        {/*  name="About"*/}
-        {/*  component={ChatScreen}*/}
-        {/*  options={{headerShown: true, gestureEnabled: true}}*/}
-        {/*/>*/}
-        <Stack.Screen
-          name="Setting"
-          component={Setting}
-          options={{headerShown: true, gestureEnabled: true}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppNavigator />
   );
 }
 

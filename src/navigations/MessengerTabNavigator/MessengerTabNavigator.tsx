@@ -1,34 +1,19 @@
-import React, { useState } from 'react';
-import {Animated, Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
-import { ChatListProvider } from '@/components/context';
-import { ChatList } from '@/components/ui/ChatList';
-import { IRouterParams } from '@/interface.ts';
-import { ChatObject, setChatObject } from '@/store/modules/ChatObject.ts';
-import { useDispatch } from 'react-redux';
-import { TabView, SceneMap } from 'react-native-tab-view';
-import {useNavigation, useRoute} from '@react-navigation/native';
-import { setBottomTab} from '@/store/modules/BottomTab';
+import React, {useState} from 'react';
+import {
+  Animated,
+  Dimensions,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {IRouterParams} from '@/interface.ts';
+import {SceneMap, TabView} from 'react-native-tab-view';
+import {ChatListScene} from '@/screens/UIKitScreen';
 
 const ChatRoute = () => {
-  // <View style={[styles.scene, { backgroundColor: '#ff4081' }]}>
-  //   <Text>First Tab Content</Text>
-  // </View>
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const onPressConversation = (chatObject: ChatObject, conversationId:string) => {
-    if (chatObject.user.id !== '-1') {
-      dispatch(setChatObject({...chatObject, conversationId}));
-    }
-    navigation.navigate('Chat');
-  };
-  return (
-    <View style={styles.chatListContainer}>
-      <ChatListProvider>
-        <ChatList onPressConversation={onPressConversation} />
-      </ChatListProvider>
-    </View>
-    );
-  };
+  return ChatListScene();
+};
 
 const UnreadRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#673ab7' }]}>
@@ -48,7 +33,7 @@ const FlagRoute = () => (
   </View>
 );
 
-export const ChatListScreen = ({ navigation }: IRouterParams) => {
+export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
 
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -102,15 +87,6 @@ export const ChatListScreen = ({ navigation }: IRouterParams) => {
             </Text>
           </Animated.View>
         ))}
-        {/*<View*/}
-        {/*  style={[*/}
-        {/*    styles.tabIndicator,*/}
-        {/*    {*/}
-        {/*      left: props.navigationState.index * (Dimensions.get('window').width / routes.length),*/}
-        {/*      width: Dimensions.get('window').width / routes.length,*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*/>*/}
         <Animated.View
           style={[
             styles.tabIndicator,
@@ -134,7 +110,6 @@ export const ChatListScreen = ({ navigation }: IRouterParams) => {
         initialLayout={{ width: Dimensions.get('window').width }}
         renderTabBar={renderTabBar}
       />
-
     </View>
   );
 };
@@ -143,9 +118,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-  },
-  chatListContainer:{
-    flex: 1,
   },
   scene: {
     flex: 1,
