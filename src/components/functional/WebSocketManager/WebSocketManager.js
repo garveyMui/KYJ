@@ -1,16 +1,17 @@
 // messageManager.js
 import { connect, disconnect, errorOccurred } from '@/store/modules/Socket';
-import { setMessage } from '@/store/modules/Messages';
+import { addMessage, setMessage} from '@/store/modules/Messages';
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { webSocket } from '@/utils/webSocket';
+import {addMessageToConversation} from '@/store/modules/Conversations';
+import {insertMessage} from '@/utils/database';
 
 let reconnectTimerRef = null; // 定时器用于重连
 
 // WebSocket 管理函数
-export const useWebSocketManager = () => {
+export const useWebSocketManager = (handleReceivedMessage) => {
   const dispatch = useDispatch();
-
   const connectWebSocket = () => {
     webSocket.onopen = () => {
       console.log('WebSocket connection established');
@@ -23,7 +24,12 @@ export const useWebSocketManager = () => {
     webSocket.onmessage = (e) => {
       const data = JSON.parse(e.data);
       console.log('Received data: ', data);
-      dispatch(setMessage(data.data));  // 更新状态以显示从服务器接收到的消息
+      handleReceivedMessage(data.data);
+      // if (Array.isArray(data.data)) {
+      //   data.data.forEach(msg=>handleReceivedMessage(msg));
+      // }else{
+      //   handleReceivedMessage(data.data);
+      // }
     };
 
     webSocket.onerror = (e) => {

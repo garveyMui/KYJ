@@ -9,7 +9,7 @@ import {Provider} from 'react-redux';
 import store from './src/store';
 import React from'react';
 import {AuthGuard} from 'src/components/functional/AuthGuard';
-import {useWebSocketManager} from '@/components/functional/MessageManager';
+import {useWebSocketManager} from 'src/components/functional/WebSocketManager';
 
 const RootComponent = () => {
 

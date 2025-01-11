@@ -34,7 +34,7 @@ export const Chat = ({navigation}: IRouterParams) => {
     nickname,
     avatar,
   };
-  console.log('conversationId', conversationId);
+  console.log('chatObject', chatObject);
   useEffect(() => {
     handleScrollToEnd();
   }, [handleScrollToEnd]);

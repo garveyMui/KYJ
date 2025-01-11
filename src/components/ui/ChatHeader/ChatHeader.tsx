@@ -3,13 +3,14 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const ChatHeader = ({navigateBack, navigateToChatSetting, chatObject}) => {
+  console.log('chatObject in header', chatObject);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
         <AntDesign name="arrowleft" size={24} color="#000" />
       </TouchableOpacity>
       <Image source={{uri: chatObject.avatar}} style={styles.avatar} />
-      <Text style={styles.username}>{chatObject.name}</Text>
+      <Text style={styles.username}>{chatObject.nickname}</Text>
       <TouchableOpacity
         onPress={navigateToChatSetting}
         style={styles.settingButton}>

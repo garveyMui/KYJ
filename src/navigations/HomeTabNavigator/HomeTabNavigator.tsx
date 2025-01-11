@@ -1,13 +1,29 @@
 import { tabConfig } from './tabConfig';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {setBottomTab} from '@/store/modules/BottomTab';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useMemo} from 'react';
+import {ConversationInterface} from '@/store/modules/Conversations.ts';
+import {RootState} from '@/store';
 
 const Tab = createBottomTabNavigator();
 const HomeTabNavigator = () => {
   const dispatch = useDispatch();
+  const {conversations} = useSelector((state: RootState) => state.conversation);
+  const {activeConversationId} = useSelector((state: RootState) => state.conversation);
+  const clickedConversationEvent = activeConversationId && (conversations[activeConversationId])?.unreadCountTotal;
+  const badgeCounts = useMemo(() => {
+    const result: number[] = [];
+    let unreadMessageCount = 0;
+    Object.values<ConversationInterface>(conversations).forEach((conversation: ConversationInterface) => {
+      unreadMessageCount += conversation.unreadCountTotal;
+    });
+    result.push(unreadMessageCount);
+    return result;
+  }, [conversations, clickedConversationEvent]);
+  console.log('badgeCounts', badgeCounts);
   return (
     <View style={styles.container}>
       <Tab.Navigator
@@ -33,7 +49,7 @@ const HomeTabNavigator = () => {
           },
         }}
       >
-        {tabConfig.map((tab) => (
+        {tabConfig.map((tab, index) => (
           <Tab.Screen
             key={tab.name}
             name={tab.name}
@@ -44,7 +60,7 @@ const HomeTabNavigator = () => {
               tabBarIcon: ({ color, size }) => (
                 <AntDesign name={tab.icon} size={size} color={color} />
               ),
-              tabBarBadge: tab.badge,
+              tabBarBadge: badgeCounts[index] > 0 ? badgeCounts[index] : null,
             }}
             listeners={() => ({
               tabPress: () => dispatch(setBottomTab(tab.name)),

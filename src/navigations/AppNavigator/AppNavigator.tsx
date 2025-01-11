@@ -11,7 +11,7 @@ import { AuthGuard } from '@/components/functional/AuthGuard';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from '@/store/modules/User.ts';
 import { RootState } from '@/store';
-import { useWebSocketManager } from '@/components/functional/MessageManager';
+import { useWebSocketManager } from 'src/components/functional/WebSocketManager';
 
 const Stack = createNativeStackNavigator();
 

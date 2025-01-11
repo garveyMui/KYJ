@@ -11,16 +11,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchUserInfo} from '@/store/modules/User.ts';
 import {RootState} from '@/store';
 import {Setting} from '@/screens/Setting';
-import {useWebSocketManager} from '@/components/functional/MessageManager';
+import {useWebSocketManager} from '@/components/functional/WebSocketManager';
 import {AppNavigator} from '@/navigations/AppNavigator';
+import {useMessageManager} from '@/components/functional/MessageManager';
+import {createTable} from '@/utils/database.ts';
 
 // import { RootState } from './src/store';
 
 function App(): React.JSX.Element {
+  createTable();
   // 在根组件中初始化 WebSocket 连接
-  useWebSocketManager();
-  const Stack = createNativeStackNavigator();
-  const navigationRef = useNavigationContainerRef();
+  const { handleReceivedMessage } = useMessageManager();
+  useWebSocketManager(handleReceivedMessage);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserInfo());

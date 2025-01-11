@@ -11,33 +11,40 @@ import {
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
-import _ from 'lodash';
 import {useChatListContext} from '../../context';
 import dayjs from 'dayjs';
-import {Message} from '@/store/modules/Messages.ts';
+import {MessageInterface} from '@/store/modules/Messages.ts';
+import {ConversationInterface} from '@/store/modules/Conversations.ts';
+import _ from 'lodash';
 
-const ChatList: React.FC<{ onPressConversation: (chatObject:ChatObject, conversationId:string) => void }> = ({ onPressConversation }) => {
-  const {messagesList} = useSelector((state: RootState) => state.messages);
-  const sessionsList = useMemo(() => {
-    const grouped = _.groupBy(messagesList, 'conversationId');
-    const minValues = _.mapValues(grouped, group => _.maxBy(group, 'timestamp'));
-    const result = _.values(minValues);
-    return result;
-  }, [messagesList]);
-  // console.log('here:', messagesList[messagesList.length - 1]);
+const ChatList: React.FC<{
+  onPressConversation: (chatObject: ChatObject, conversationId: string, messages: MessageInterface[]) => void;
+}> = ({onPressConversation}) => {
+  const {conversations} = useSelector((state: RootState) => state.conversation);
+  const sessionList = useMemo(() => {
+    // console.log('conversations', conversations);
+    return _.orderBy(Object.values(conversations), ['lastMessage.timestamp'], ['desc']);
+  }, [conversations]);
   const {conversationsRef} = useChatListContext();
-  console.log('conversationRef', conversationsRef.current);
-  const renderItem = ({item}: {item: Message}) => (
-    <TouchableOpacity onPress={()=>{
-      onPressConversation(conversationsRef.current.get(item.sender.id), item.conversationId);
-    }}>
+  // console.log('conversationRef', conversationsRef.current);
+  const renderItem = ({item}: {item: ConversationInterface}) => (
+    <TouchableOpacity
+      onPress={() => {
+        console.log('chatObject clicked', item.chatObject);
+        onPressConversation(
+          // conversationsRef.current.get(item.lastMessage.sender.id),
+          item.chatObject,
+          item.conversationId,
+          item.messages,
+        );
+      }}>
       <View style={styles.messageContainer}>
         <View style={styles.leftSide}>
           <View style={styles.avatarContainer}>
-            <Image source={{ uri: item.sender.avatar }} style={styles.avatar} />
-            {item?.unreadCount > 0 && (
+            <Image source={{uri: item.lastMessage.sender.avatar}} style={styles.avatar} />
+            {item?.unreadCountTotal > 0 && (
               <View style={styles.badgeContainer}>
-                <Text style={styles.badgeText}>{item?.unreadCount}</Text>
+                <Text style={styles.badgeText}>{item?.unreadCountTotal}</Text>
               </View>
             )}
           </View>
@@ -46,14 +53,16 @@ const ChatList: React.FC<{ onPressConversation: (chatObject:ChatObject, conversa
         <View style={styles.rightSide}>
           <View style={styles.topRow}>
             <Text style={styles.sender}>
-              {conversationsRef.current.get(item.sender.id)?.nickname}
+              {conversationsRef.current.get(item.lastMessage.sender.id)?.nickname}
             </Text>
             <Text style={styles.timestamp}>
-              {dayjs(new Date(item.timestamp)).format('HH:mm')}
+              {dayjs(new Date(item.lastMessage.timestamp)).format('HH:mm')}
             </Text>
           </View>
           <Text style={styles.message}>
-            {item.content.type === 'text' ? item.content.text : `[${item.content.type}]`}
+            {item.lastMessage.content.type === 'text'
+              ? item.lastMessage.content.text
+              : `[${item.lastMessage.content.type}]`}
           </Text>
         </View>
       </View>
@@ -63,9 +72,9 @@ const ChatList: React.FC<{ onPressConversation: (chatObject:ChatObject, conversa
   return (
     <View style={styles.container}>
       <FlatList
-        data={sessionsList}
+        data={sessionList}
         renderItem={renderItem}
-        keyExtractor={item => item.messageId.toString()}
+        keyExtractor={item => item.conversationId.toString()}
       />
     </View>
   );

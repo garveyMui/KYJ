@@ -4,23 +4,15 @@ import {useEffect, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
 import {useChatContext} from '../../context';
-import {Message} from '@/store/modules/Messages.ts'
+import {MessageInterface} from '@/store/modules/Messages.ts'
 
 const MessageList: React.FC<Props> = ({conversationId}) => {
   const {messagesList} = useSelector((state: RootState) => state.messages);
-  const chatRecords = useMemo((): Array<Message> => {
-    const getChatRecords = (): Array<Message> => {
-      return messagesList.filter(
-        (item: Message) => item.conversationId === conversationId,
-      );
-    };
-    return getChatRecords();
-  }, [messagesList, conversationId]);
   const {messageListRef, inputHeight, contentHeight, handleScrollToEnd} =
     useChatContext();
   useEffect(() => {
     handleScrollToEnd();
-  }, [chatRecords, handleScrollToEnd]);
+  }, [messagesList, handleScrollToEnd]);
   return (
     <FlatList
       ref={messageListRef}
@@ -29,7 +21,7 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
         flexGrow: 1,
       }}
       onContentSizeChange={() => handleScrollToEnd()}
-      data={chatRecords}
+      data={messagesList}
       renderItem={({item}) => (
         <TouchableWithoutFeedback onPress={() => {}}>
           <MessageItem message={item} isOwnMessage={item.sender.id === '-1'} />

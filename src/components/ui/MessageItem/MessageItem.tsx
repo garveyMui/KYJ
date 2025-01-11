@@ -3,13 +3,20 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messages, {MessageInterface} from '@/store/modules/Messages.ts';
 
-const MessageItem = ({message, isOwnMessage, onDownload = null}) => {
+const MessageItem: React.FC<{
+  message:MessageInterface;
+  isOwnMessage: boolean;
+  onDownload?: () => void;
+}> = ({message, isOwnMessage, onDownload = null}) => {
   console.log('MessageItem', message.content.text);
   const [showName, setShowName] = useState(false);
+  const [showTime, setShowTime] = useState(false);
 
   const handlePress = () => {
     setShowName(!showName);
+    setShowTime(!showTime);
   };
   const renderMessageContent = () => {
     switch (message.content.type) {
@@ -23,7 +30,7 @@ const MessageItem = ({message, isOwnMessage, onDownload = null}) => {
       case 'image':
         return (
           <Image
-            source={{uri: message.content.text}}
+            source={{uri: message.content.mediaUrl}}
             style={{width: 200, height: 200, borderRadius: 10}}
           />
         );
@@ -31,7 +38,7 @@ const MessageItem = ({message, isOwnMessage, onDownload = null}) => {
         return (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={{color: '#888888', fontSize: 14}}>
-              {message.content.fileName}
+              {message.content.mediaInfo?.name}
             </Text>
             {!message.content.downloaded ? (
               <TouchableOpacity
@@ -117,7 +124,7 @@ const MessageItem = ({message, isOwnMessage, onDownload = null}) => {
       }}>
       {!isOwnMessage && (
         <Image
-          source={{uri: message.avatar}}
+          source={{uri: message.sender.avatar}}
           style={{width: 40, height: 40, borderRadius: 20}}
         />
       )}
@@ -130,6 +137,11 @@ const MessageItem = ({message, isOwnMessage, onDownload = null}) => {
         {showName && (
           <Text style={{color: '#888888', fontSize: 12}}>
             {message.sender.name}
+          </Text>
+        )}
+        {showTime && (
+          <Text style={{color: '#888888', fontSize: 12}}>
+            {message.timestamp}
           </Text>
         )}
         {renderMessageContent()}
