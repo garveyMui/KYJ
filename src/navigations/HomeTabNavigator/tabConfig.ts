@@ -1,26 +1,25 @@
 // src/navigation/tabConfig.ts
-import {ChatListScene} from '@/screens/UIKitScreen';
 import {DocScreen} from '@/screens/UIKitScreen/DocScreen';
 import {ContactsScreen} from '@/screens/UIKitScreen/ContactsScreen';
 import {MessengerTabNavigator} from '@/navigations/MessengerTabNavigator';
 
 export const tabConfig = [
   {
-    name: "Messenger",
+    name: 'Messenger',
     component: MessengerTabNavigator,
-    icon: "message1",
-    label: "Messenger",
+    icon: 'message1',
+    label: 'Messenger',
   },
   {
-    name: "Docs",
+    name: 'Docs',
     component: DocScreen,
-    icon: "inbox",
-    label: "Docs",
+    icon: 'inbox',
+    label: 'Docs',
   },
   {
-    name: "Contacts",
+    name: 'Contacts',
     component: ContactsScreen,
-    icon: "team",
-    label: "Contacts",
+    icon: 'team',
+    label: 'Contacts',
   },
 ];

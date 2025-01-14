@@ -1,4 +1,4 @@
-import { tabConfig } from './tabConfig';
+import {tabConfig} from './tabConfig';
 import {useDispatch, useSelector} from 'react-redux';
 import {StyleSheet, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';

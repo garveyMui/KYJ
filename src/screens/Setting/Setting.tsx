@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
   Alert,
-  Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -9,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {
@@ -19,7 +18,6 @@ import {
 } from '@tencentcloud/chat-uikit-engine';
 
 import type {IRouterParams} from '../../interface';
-import {LogoutChat} from '../../initApp';
 
 import {Avatar} from '@tencentcloud/chat-uikit-react-native';
 import {clearUserInfo} from '@/store/modules/User.ts';

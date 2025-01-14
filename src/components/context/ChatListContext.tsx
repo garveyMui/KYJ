@@ -1,8 +1,6 @@
-import React, {createContext, useContext, useRef, ReactNode} from 'react';
+import React, {createContext, ReactNode, useContext, useRef} from 'react';
 import {useSelector} from 'react-redux';
-import {Contact} from '@/store/modules/Contacts.ts';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
-
 
 interface ConversationContextType {
   conversationsRef: React.RefObject<Map<string, ChatObject>>;

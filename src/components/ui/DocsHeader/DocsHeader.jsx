@@ -1,21 +1,19 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
-export const DocsHeader = ({ navigateBack, navigateToChatSetting, chatObject }) => {
+export const DocsHeader = ({
+  navigateBack,
+  navigateToChatSetting,
+  chatObject,
+}) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownVisible(!isDropdownVisible);
   };
 
-  const handleOptionSelect = (option) => {
+  const handleOptionSelect = option => {
     console.log('Selected Option:', option);
     setDropdownVisible(false); // Close dropdown after selection
   };
@@ -44,7 +42,9 @@ export const DocsHeader = ({ navigateBack, navigateToChatSetting, chatObject }) 
         </View>
       )}
 
-      <TouchableOpacity onPress={navigateToChatSetting} style={styles.settingButton}>
+      <TouchableOpacity
+        onPress={navigateToChatSetting}
+        style={styles.settingButton}>
         <AntDesign name="setting" size={24} color="#000" />
       </TouchableOpacity>
     </View>

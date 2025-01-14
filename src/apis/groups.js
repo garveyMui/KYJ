@@ -1,4 +1,4 @@
-import { request } from '@/utils/request';
+import {request} from '@/utils/request';
 
 export const createGroupAPI = async (uid, group) => {
   return request({

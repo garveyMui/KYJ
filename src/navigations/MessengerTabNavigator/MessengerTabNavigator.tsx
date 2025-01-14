@@ -10,16 +10,22 @@ import {
 import {IRouterParams} from '@/interface.ts';
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {ChatListScene} from '@/screens/UIKitScreen';
+import {UnreadListScene} from '@/screens/UIKitScreen/UnreadListScene';
+import {ChatObject} from '@/store/modules/ChatObject.ts';
+import {MessageInterface} from '@/store/modules/Messages.ts';
+import {MessengerContextProvider} from '@/components/context/MessengerContext.tsx';
 
 const ChatRoute = () => {
   return ChatListScene();
 };
 
-const UnreadRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]}>
-    <Text>Second Tab Content</Text>
-  </View>
-);
+interface OnPressConvProps {
+  onPressConversation: (chatObject: ChatObject, conversationId: string, messages: MessageInterface[]) => void;
+}
+
+const UnreadRoute: React.FC<OnPressConvProps> = ({onPressConversation}) => {
+  return UnreadListScene({onPressConversation});
+};
 
 const NoticeRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#009688' }]}>
@@ -42,7 +48,7 @@ export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
     { key: 'notice', title: 'Notice' },
     { key: 'flag', title: 'Flag' },
   ]);
-
+  const [tabBarWidth, setTabBarWidth] = useState(0);
   const renderScene = SceneMap({
     'chat': ChatRoute,
     'unread': UnreadRoute,
@@ -57,17 +63,28 @@ export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
     outputRange: ['#009688', '#ff4081', '#673ab7'], // Color change for each tab
   });
   // Update tab indicator position when the index changes
-  const onIndexChange = (newIndex) => {
-    setIndex(newIndex);
+  const onIndexChange = (newIndex: number) => {
     Animated.spring(tabIndicatorPosition, {
-      toValue: newIndex * (Dimensions.get('window').width / routes.length),
-      useNativeDriver: false, // We are animating the left property
+      toValue: newIndex * (tabBarWidth / routes.length),
+      useNativeDriver: false,
+      tension: 150,           // 较高的张力，使得滑块快速起动
+      friction: 30,           // 中等摩擦力，使滑块稍微减速但不是很慢
+      overshootClamping: true, // 限制滑块的过冲，不会超过目标位置
+      restDisplacementThreshold: 0.1, // 减少目标位置的最小位移
+      restSpeedThreshold: 0.1,         // 设置最小速度来停止动画
     }).start();
+    setIndex(newIndex);
   };
-
-  const renderTabBar = (props) => {
+  const renderTabBar = (props: any) => {
     return (
-      <View style={styles.tabBarContainer}>
+      <View
+        style={styles.tabBarContainer}
+        onLayout={(e) => {
+          const {width} = e.nativeEvent.layout;
+          console.log('width', width);
+          setTabBarWidth(width);
+        }}
+      >
         {props.navigationState.routes.map((route, i) => (
           <Animated.View
             key={i}
@@ -92,7 +109,7 @@ export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
             styles.tabIndicator,
             {
               left: tabIndicatorPosition, // Animated left position
-              width: Dimensions.get('window').width / routes.length, // Dynamic width based on tab count
+              width: tabBarWidth / routes.length, // Dynamic width based on tab count
             },
           ]}
         />
@@ -101,16 +118,18 @@ export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TabView
-        style={styles.tabView}
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        onIndexChange={setIndex}
-        initialLayout={{ width: Dimensions.get('window').width }}
-        renderTabBar={renderTabBar}
-      />
-    </View>
+    <MessengerContextProvider>
+      <View style={styles.container}>
+        <TabView
+          style={styles.tabView}
+          navigationState={{ index, routes }}
+          renderScene={renderScene}
+          onIndexChange={onIndexChange}
+          initialLayout={{ width: Dimensions.get('window').width }}
+          renderTabBar={renderTabBar}
+        />
+      </View>
+    </MessengerContextProvider>
   );
 };
 
@@ -153,7 +172,6 @@ const styles = StyleSheet.create({
   },
   activeTabItem: {
     borderRadius: 25,
-    backgroundColor: '#009688',
     zIndex: 100,
     // transition: 'left 0.3s ease-in-out', // Smooth transition
   },

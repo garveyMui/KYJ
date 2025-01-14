@@ -1,17 +1,23 @@
 // src/navigation/AppNavigator.tsx
-import React, { useEffect } from 'react';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Home as HomeScreen } from '@/screens/Home';
-import { ChatListScene, ChatScreen, ChatSettingScreen } from '@/screens/UIKitScreen';
-import { Login as LoginScreen } from '@/screens/Login';
-import { DocScreen } from '@/screens/UIKitScreen/DocScreen';
-import { Setting } from '@/screens/Setting';
-import { AuthGuard } from '@/components/functional/AuthGuard';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserInfo } from '@/store/modules/User.ts';
-import { RootState } from '@/store';
-import { useWebSocketManager } from 'src/components/functional/WebSocketManager';
+import React, {useEffect} from 'react';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Home as HomeScreen} from '@/screens/Home';
+import {
+  ChatListScene,
+  ChatScreen,
+  ChatSettingScreen,
+} from '@/screens/UIKitScreen';
+import {Login as LoginScreen} from '@/screens/Login';
+import {DocScreen} from '@/screens/UIKitScreen/DocScreen';
+import {Setting} from '@/screens/Setting';
+import {AuthGuard} from '@/components/functional/AuthGuard';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchUserInfo} from '@/store/modules/User.ts';
+import {RootState} from '@/store';
 
 const Stack = createNativeStackNavigator();
 

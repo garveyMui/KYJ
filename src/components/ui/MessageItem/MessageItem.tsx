@@ -3,11 +3,11 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import messages, {MessageInterface, updateMessage} from '@/store/modules/Messages.ts';
+import {MessageInterface, updateMessage} from '@/store/modules/Messages.ts';
 import {useDispatch} from 'react-redux';
 
 const MessageItem: React.FC<{
-  message:MessageInterface;
+  message: MessageInterface;
   isOwnMessage: boolean;
   onDownload?: () => void;
 }> = ({message, isOwnMessage, onDownload = null}) => {
@@ -86,12 +86,15 @@ const MessageItem: React.FC<{
       console.log('fileMessage: ', message);
       console.log('localPath: ', localPath);
       try {
-        const newMessage: MessageInterface = JSON.parse(JSON.stringify(message));
+        const newMessage: MessageInterface = JSON.parse(
+          JSON.stringify(message),
+        );
         newMessage.content.mediaInfo.localPath = localPath; // Update the message object
         newMessage.status.downloaded = true; // Update state
         dispatch(updateMessage(newMessage));
+        // dispatch(updateConversation(newMessage));  TODO conversation updated
         await previewFile(localPath);
-      } catch(e){
+      } catch (e) {
         console.error(e);
       }
     } else {

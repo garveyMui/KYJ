@@ -1,15 +1,11 @@
-
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {DocsHeader} from '@/components/ui/DocsHeader';
-import {RootState} from '@/store';
-import avatarImage from '@/assets/avatar.jpg'
+import avatarImage from '@/assets/avatar.jpg';
 
-const HomeHeader = ({ title }) => {
+const HomeHeader = ({title}) => {
   const navigation = useNavigation();
   const handleSettingPress = () => {
     navigation.navigate('Setting');
@@ -21,13 +17,13 @@ const HomeHeader = ({ title }) => {
     navigation.navigate('ChatSetting');
   };
 
-  const {id: sender, name, avatar} = useSelector((state) => state.chatObject);
+  const {id: sender, name, avatar} = useSelector(state => state.chatObject);
   const chatObject = {
     id: 0,
     name: 'ChatGPT',
     avatar,
   };
-  console.log('avatar', avatarImage)
+  console.log('avatar', avatarImage);
   const {routeName: currentRoute} = useSelector(state => state.bottomTab);
   console.log('currentRoute', currentRoute);
   const renderHeaderContentByRoute = () => {
@@ -49,7 +45,9 @@ const HomeHeader = ({ title }) => {
   return (
     <View style={styles.header}>
       {/* 固定部分：头像 */}
-      <TouchableOpacity style={styles.avatarContainer} onPress={handleSettingPress}>
+      <TouchableOpacity
+        style={styles.avatarContainer}
+        onPress={handleSettingPress}>
         <Image source={avatarImage} style={styles.avatar} alt={'Avatar'} />
       </TouchableOpacity>
       {/* 路由特定内容部分 */}

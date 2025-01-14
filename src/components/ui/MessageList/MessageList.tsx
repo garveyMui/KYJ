@@ -1,10 +1,9 @@
 import {FlatList, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {MessageItem} from '../MessageItem';
-import {useEffect, useMemo} from 'react';
+import {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
 import {useChatContext} from '../../context';
-import {MessageInterface} from '@/store/modules/Messages.ts'
 
 const MessageList: React.FC<Props> = ({conversationId}) => {
   const {messagesList} = useSelector((state: RootState) => state.messages);

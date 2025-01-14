@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
-import { View, TextInput, FlatList, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import {FlatList, StyleSheet, Text, TextInput, View} from 'react-native';
 import {useDocsInputContext} from '@/components/context';
 
 const AutoCompleteInput = () => {
-  const {inputText, handleInputChange, suggestions, handleSuggestionSelect : onSuggestionSelect} = useDocsInputContext();
+  const {
+    inputText,
+    handleInputChange,
+    suggestions,
+    handleSuggestionSelect: onSuggestionSelect,
+  } = useDocsInputContext();
   return (
     <View style={styles.container}>
       {suggestions.length > 0 && (
         <FlatList
           data={suggestions}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <Text style={styles.suggestion} onPress={() => onSuggestionSelect(item)}>
+          renderItem={({item}) => (
+            <Text
+              style={styles.suggestion}
+              onPress={() => onSuggestionSelect(item)}>
               {item}
             </Text>
           )}

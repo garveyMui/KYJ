@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {IRouterParams} from '../../../interface';
-import {Dimensions, Keyboard, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {Docs} from '@/components/ui/Docs';
 import {DocsContextProvider} from '@/components/context/DocsContext';
 

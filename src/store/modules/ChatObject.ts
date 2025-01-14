@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {User} from './User';
 
 interface ChatObject {
   // user?: User;

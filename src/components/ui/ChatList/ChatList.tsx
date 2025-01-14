@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useSelector} from 'react-redux';
-import {RootState} from '@/store';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
 import {useChatListContext} from '../../context';
 import dayjs from 'dayjs';
@@ -18,13 +16,22 @@ import {ConversationInterface} from '@/store/modules/Conversations.ts';
 import _ from 'lodash';
 
 const ChatList: React.FC<{
-  onPressConversation: (chatObject: ChatObject, conversationId: string, messages: MessageInterface[]) => void;
-}> = ({onPressConversation}) => {
-  const {conversations} = useSelector((state: RootState) => state.conversation);
+  onPressConversation: (
+    chatObject: ChatObject,
+    conversationId: string,
+    messages: MessageInterface[],
+  ) => void;
+  conversations: Record<string, ConversationInterface>;
+}> = ({onPressConversation, conversations}) => {
+  // const {conversations} = useSelector((state: RootState) => state.conversation);
   console.log('conversations', conversations);
   const sessionList = useMemo(() => {
     // console.log('conversations', conversations);
-    return _.orderBy(Object.values(conversations), ['lastUpdateTime'], ['desc']);
+    return _.orderBy(
+      Object.values(conversations),
+      ['lastUpdateTime'],
+      ['desc'],
+    );
   }, [conversations]);
   const {conversationsRef} = useChatListContext();
   // console.log('conversationRef', conversationsRef.current);
@@ -42,7 +49,10 @@ const ChatList: React.FC<{
       <View style={styles.messageContainer}>
         <View style={styles.leftSide}>
           <View style={styles.avatarContainer}>
-            <Image source={{uri: item.chatObject.avatar}} style={styles.avatar} />
+            <Image
+              source={{uri: item.chatObject.avatar}}
+              style={styles.avatar}
+            />
             {item?.unreadCountTotal > 0 && (
               <View style={styles.badgeContainer}>
                 <Text style={styles.badgeText}>{item?.unreadCountTotal}</Text>
@@ -60,11 +70,7 @@ const ChatList: React.FC<{
               {dayjs(new Date(item.lastUpdateTime)).format('HH:mm')}
             </Text>
           </View>
-          <Text
-            style={styles.message}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
+          <Text style={styles.message} numberOfLines={1} ellipsizeMode="tail">
             {item.lastMessageAbstract}
           </Text>
         </View>

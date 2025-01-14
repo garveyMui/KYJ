@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { getToken } from '@/utils/tokens';
-import { View, ActivityIndicator } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {getToken} from '@/utils/tokens';
+import {ActivityIndicator, View} from 'react-native';
 
-const AuthGuard = ({ children, navigation }) => {
+const AuthGuard = ({children, navigation}) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +21,7 @@ const AuthGuard = ({ children, navigation }) => {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );

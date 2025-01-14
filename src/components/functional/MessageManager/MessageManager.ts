@@ -1,17 +1,14 @@
 import {postMessageAPI} from '@/apis/messages';
 import {getAttachAPI, postAttachAPI} from '@/apis/attachments';
-import {MessageInterface} from '@/store/modules/Messages';
-import { useDispatch, useSelector } from 'react-redux';
+import {addMessage, MessageInterface} from '@/store/modules/Messages';
+import {useDispatch, useSelector} from 'react-redux';
 import {
-  setConversations,
-  setConversationId,
   addConversation,
   addMessageToConversation,
+  ConversationInterface,
+  setConversationId,
 } from '@/store/modules/Conversations';
-import { addMessage, setMessage } from '@/store/modules/Messages';
-import {useEffect, useRef, useState} from 'react';
 import _ from 'lodash';
-import { ConversationInterface } from '@/store/modules/Conversations';
 import {
   getMessagesByPage,
   insertConversation,
@@ -24,9 +21,9 @@ export const _postMessage = async (message: MessageInterface) => {
     const formData = new FormData();
     formData.append('message', message);
     // 附加普通字段 sender 和 recipient
-    formData.append('sender', message.sender.id);  // 发送者ID
-    formData.append('recipient', message.terminalIds);  // 所有接收者ID TODO: 暂时只支持单聊
-    let response: any|null = null;
+    formData.append('sender', message.sender.id); // 发送者ID
+    formData.append('recipient', message.terminalIds); // 所有接收者ID TODO: 暂时只支持单聊
+    let response: any | null = null;
     let result = null;
     switch (message.content.type) {
       case 'text':

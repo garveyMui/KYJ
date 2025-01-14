@@ -1,4 +1,4 @@
-import { createHash } from 'crypto';
+import {createHash} from 'crypto';
 
 /**
  * 根据参与者的uid生成conversationId

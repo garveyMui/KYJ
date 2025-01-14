@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import {User} from '@/store/modules/User';
 
 interface PhoneNumber {
-  type: "mobile" | "work" | "home" | string; // 允许预定义类型或自定义类型
+  type: 'mobile' | 'work' | 'home' | string; // 允许预定义类型或自定义类型
   number: string; // 电话号码，支持国际号码格式
 }
 

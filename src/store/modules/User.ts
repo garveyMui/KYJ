@@ -1,8 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {request} from '@/utils/request';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {setToken as _setToken, getToken, removeToken} from '@/utils';
-import {logginAPI, getProfileAPI} from '@/apis/user';
+import {getToken, removeToken, setToken as _setToken} from '@/utils';
+import {getProfileAPI, logginAPI} from '@/apis/user';
 
 interface Status {
   online: boolean; // 是否在线

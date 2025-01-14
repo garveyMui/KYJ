@@ -1,16 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import {IRouterParams} from '../../../interface';
 import {Dimensions, StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
-import {DocsHeader} from '../DocsHeader';
 import {DocsList} from '../DocsList';
 import {AutoCompleteInput} from '../AutoCompleteInput';
 import {DocsInputProvider} from '@/components/context';
 import {useDocsContext} from '@/components/context/DocsContext';
-import {useRoute} from '@react-navigation/native';
-import {setBottomTab} from '@/store/modules/BottomTab';
 
 const windowHeight = Dimensions.get('window').height;
 export const Docs = ({ navigation }: IRouterParams) => {

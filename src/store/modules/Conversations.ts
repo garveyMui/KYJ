@@ -5,17 +5,17 @@ import {ChatObject} from '@/store/modules/ChatObject.ts';
 
 export interface ConversationInterface {
   lastUpdateTime: string;
-  conversationId: string;    // 会话ID
-  unreadCountTotal: number;       // 未读消息数量（群聊中所有成员的总和）
-  isGroup: boolean;          // 是否是群聊
+  conversationId: string; // 会话ID
+  unreadCountTotal: number; // 未读消息数量（群聊中所有成员的总和）
+  isGroup: boolean; // 是否是群聊
   isMuted: boolean;
   chatObject: ChatObject;
   lastMessageAbstract: string;
   groupInfo?: GroupInfo | null | undefined;
-  messages: MessageInterface[];       // 该会话的所有消息
+  messages: MessageInterface[]; // 该会话的所有消息
   currentPage: number;
   totalPages: number;
-  unreadCounts?: { [uid: string]: number };
+  unreadCounts?: {[uid: string]: number};
 }
 
 export interface GroupInfo {
@@ -64,6 +64,9 @@ const Conversations = createSlice({
       delete state.conversations[action.payload];
       // state.conversations.delete(action.payload);
     },
+    updateConversation: (state, action: PayloadAction<ConversationInterface>) => {
+      state.conversations[action.payload.conversationId] = action.payload;
+    },
     addMessageToConversation : (state: any, action: PayloadAction<MessageInterface>) => {
       console.log('addMessageToConversation', action.payload);
       const message = action.payload;
@@ -106,6 +109,7 @@ export const {
   removeConversation,
   addMessageToConversation,
   removeMessageFromConversation,
+  updateConversation,
 } = Conversations.actions;
 
 export default Conversations.reducer;

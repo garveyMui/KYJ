@@ -1,12 +1,9 @@
 // messageManager.js
-import { connect, disconnect, errorOccurred } from '@/store/modules/Socket';
-import { addMessage, setMessage} from '@/store/modules/Messages';
-import { useDispatch } from 'react-redux';
-import { useEffect, useRef } from 'react';
-import { webSocket } from '@/utils/webSocket';
-import {addMessageToConversation} from '@/store/modules/Conversations';
-import {insertMessage} from '@/utils/database';
-import {debug, ableToFetchFromServer} from '@/appConfig';
+import {connect, disconnect, errorOccurred} from '@/store/modules/Socket';
+import {useDispatch} from 'react-redux';
+import {useEffect} from 'react';
+import {webSocket} from '@/utils/webSocket';
+import {ableToFetchFromServer, debug} from '@/appConfig';
 
 let reconnectTimerRef = null; // 定时器用于重连
 

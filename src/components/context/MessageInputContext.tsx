@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import {MessageInterface, postMessage} from '@/store/modules/Messages';
+import {MessageInterface} from '@/store/modules/Messages';
 import {useDispatch, useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid';
 import dayjs from 'dayjs';

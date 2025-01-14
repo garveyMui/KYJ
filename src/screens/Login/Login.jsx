@@ -7,10 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
-import {fetchLogin, setToken} from '@/store/modules/User';
+import {fetchLogin} from '@/store/modules/User';
 import {logginAPI, registerAPI} from '@/apis/auth';
 
 export const Login = ({navigation}) => {
@@ -33,13 +32,11 @@ export const Login = ({navigation}) => {
   const dispatch = useDispatch();
   const handleLogin = async () => {
     try {
-      dispatch(fetchLogin({ username, password }));
-      const response = await logginAPI(
-        {
-          username,
-          password,
-        },
-      );
+      dispatch(fetchLogin({username, password}));
+      const response = await logginAPI({
+        username,
+        password,
+      });
       if (response.status === 200) {
         // 成功登录后，将 JWT token 存储在 AsyncStorage 中
         await AsyncStorage.setItem('jwtToken', response.data.token);

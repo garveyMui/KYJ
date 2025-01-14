@@ -5,7 +5,6 @@ import {getToken, removeToken} from '@/utils/tokens';
 
 // const configPath = path.join(__dirname, 'config.json');
 // const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-
 import config from './config.json';
 
 const request = axios.create({
