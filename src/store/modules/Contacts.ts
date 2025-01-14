@@ -16,7 +16,7 @@ interface CustomFields {
 }
 
 interface ContactSettings {
-  muteNotifications: boolean; // 是否静音此联系人的通知
+  mute: boolean; // 是否静音此联系人的通知
   favorite: boolean; // 是否标记为收藏
 }
 

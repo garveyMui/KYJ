@@ -1,8 +1,8 @@
 [
   {
-    "contactId": "contact001",
+    "contactId": 1,
     "user": {
-      "id": "user001",
+      "id": 1,
       "name": "Alice",
       "avatar": "https://example.com/avatar/alice.png"
     },
@@ -32,9 +32,9 @@
     }
   },
   {
-    "contactId": "contact002",
+    "contactId": 2,
     "user": {
-      "id": "user002",
+      "id": 2,
       "name": "Bob",
       "avatar": "https://example.com/avatar/bob.png"
     },
@@ -63,9 +63,9 @@
     }
   },
   {
-    "contactId": "contact003",
+    "contactId": 3,
     "user": {
-      "id": "user003",
+      "id": 3,
       "name": "Charlie",
       "avatar": "https://example.com/avatar/charlie.png"
     },
@@ -94,9 +94,9 @@
     }
   },
   {
-    "contactId": "contact004",
+    "contactId": 4,
     "user": {
-      "id": "user004",
+      "id": 4,
       "name": "David",
       "avatar": "https://example.com/avatar/david.png"
     },
@@ -125,9 +125,9 @@
     }
   },
   {
-    "contactId": "contact005",
+    "contactId": 5,
     "user": {
-      "id": "user005",
+      "id": 5,
       "name": "Eve",
       "avatar": "https://example.com/avatar/eve.png"
     },

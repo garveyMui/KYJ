@@ -4,26 +4,26 @@ import {MessageInterface} from '@/store/modules/Messages';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
 
 export interface ConversationInterface {
-  chatObject: ChatObject;
+  lastUpdateTime: string;
   conversationId: string;    // 会话ID
-  participants: User[];      // 会话的参与者（单聊是2人，群聊是多人）
+  unreadCountTotal: number;       // 未读消息数量（群聊中所有成员的总和）
+  isGroup: boolean;          // 是否是群聊
+  isMuted: boolean;
+  chatObject: ChatObject;
+  lastMessageAbstract: string;
+  groupInfo?: GroupInfo | null | undefined;
   messages: MessageInterface[];       // 该会话的所有消息
   currentPage: number;
   totalPages: number;
-  unreadCounts: { [uid: string]: number };
-  unreadCountTotal: number;       // 未读消息数量（群聊中所有成员的总和）
-  lastMessage: MessageInterface;      // 最近一条消息
-  isGroup: boolean;          // 是否是群聊
-  pushNotificationEnabled?: boolean;  // 是否启用推送通知
-  isMuted: boolean;
-  groupInfo?: GroupInfo;
+  unreadCounts?: { [uid: string]: number };
 }
 
-interface GroupInfo {
-  groupName: string;                // 群聊名称
-  groupAvatar?: string;             // 群聊头像（可选）
+export interface GroupInfo {
+  // groupName: string;                // 群聊名称
+  // groupAvatar?: string;             // 群聊头像（可选）
   members: User[];                  // 群聊成员
   adminIds: string[];               // 群聊管理员的用户ID
+  maxMembers?: number;
 }
 
 // 初始状态接口定义
@@ -34,7 +34,7 @@ interface ConversationsState {
   // conversations: Map<string, ConversationInterface>;  // 使用 Map 存储所有会话
 }
 
-interface Conversations {
+export interface Conversations {
   [conversationId: string]: ConversationInterface;  // 使用 conversationId 作为键，存储对应的 Conversation
 }
 // type Conversations = Map<string, ConversationInterface>;
@@ -54,7 +54,7 @@ const Conversations = createSlice({
       state.activeConversationId = action.payload;
     },
     setConversations: (state, action: PayloadAction<Conversations>) => {
-      state.conversations = action.payload;
+      state.conversations = {...state.conversations, ...action.payload};
     },
     addConversation: (state, action: PayloadAction<ConversationInterface>) => {
       state.conversations[action.payload.conversationId] = action.payload;
@@ -71,7 +71,9 @@ const Conversations = createSlice({
       conversation.messages.push(message);  // 添加消息到会话
       conversation.lastMessage = message;   // 更新最后一条消息
       conversation.unreadCountTotal += message.isRead ? 0 : 1;   // 更新总未读消息数
-      conversation.unreadCounts[message.sender.id] = (conversation.unreadCounts[message.sender.id] || 0) + 1;  // 更新发送者的未读消息数
+      if (message.sender.id !== -1){
+        conversation.unreadCounts[message.sender.id] = (conversation.unreadCounts[message.sender.id] || 0) + 1;  // 更新发送者的未读消息数
+      }
     },
     removeMessageFromConversation : (state: any, action: PayloadAction<{ conversationId: string, messageId: string }>) => {
       const { conversationId, messageId } = action.payload;

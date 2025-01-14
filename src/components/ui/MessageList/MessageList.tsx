@@ -24,7 +24,7 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
       data={messagesList}
       renderItem={({item}) => (
         <TouchableWithoutFeedback onPress={() => {}}>
-          <MessageItem message={item} isOwnMessage={item.sender.id === '-1'} />
+          <MessageItem message={item} isOwnMessage={item.sender.id === -1} />
         </TouchableWithoutFeedback>
       )}
       keyExtractor={item => item.messageId.toString()}

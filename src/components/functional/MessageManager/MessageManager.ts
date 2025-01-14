@@ -1,5 +1,5 @@
 import {postMessageAPI} from '@/apis/messages';
-import {postAttachAPI} from '@/apis/attachments';
+import {getAttachAPI, postAttachAPI} from '@/apis/attachments';
 import {MessageInterface} from '@/store/modules/Messages';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,10 +9,15 @@ import {
   addMessageToConversation,
 } from '@/store/modules/Conversations';
 import { addMessage, setMessage } from '@/store/modules/Messages';
-import { useEffect } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import _ from 'lodash';
 import { ConversationInterface } from '@/store/modules/Conversations';
-import { getMessagesByPage, insertMessage } from '@/utils/database.ts';
+import {
+  getMessagesByPage,
+  insertConversation,
+  insertMessages,
+} from '@/utils/database.ts';
+import {Contact} from '@/store/modules/Contacts.ts';
 
 export const _postMessage = async (message: MessageInterface) => {
   try {
@@ -20,11 +25,7 @@ export const _postMessage = async (message: MessageInterface) => {
     formData.append('message', message);
     // 附加普通字段 sender 和 recipient
     formData.append('sender', message.sender.id);  // 发送者ID
-    if (Array.isArray(message.recipient)){
-      formData.append('recipient', message.recipient[0].id);  // TODO: 暂时只支持单聊
-    }else{
-      formData.append('recipient', message.recipient.id);  // 接收者ID
-    }
+    formData.append('recipient', message.terminalIds);  // 所有接收者ID TODO: 暂时只支持单聊
     let response: any|null = null;
     let result = null;
     switch (message.content.type) {
@@ -81,63 +82,106 @@ export const useMessageManager = () => {
   const dispatch = useDispatch();
   const {activeConversationId} = useSelector((state) => state.conversation);
   const conversations = useSelector((state) => state.conversation.conversations);
+  const {contacts} = useSelector(state => state.contacts);
+
   const handleSendMessage = (message: MessageInterface, callbacks: (()=>void)[]) => {
+    // Internet
     postMessage(message);
+    // Database
     // Insert into SQLite
-    // insertMessage(message);
+    insertMessages([message]);
     // Dispatch Redux action to update the conversation state
+    console.log('sendMessage', message);
     dispatch(addMessageToConversation(message));
     dispatch(addMessage(message));
     callbacks.forEach((callback) => callback());
   };
 
+  const fetchAttachments = async (attachmentUrl: string, mimeType: string = 'image/jpeg') => {
+    try {
+      const response = await getAttachAPI(attachmentUrl);
+      // const blob = await response.data.blob();
+      const blob = new Blob([response.data], { type:  mimeType });
+      const url = URL.createObjectURL(blob);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = reader.result as string;
+      };
+      reader.readAsDataURL(blob);
+    } catch (error) {
+      console.error('Error fetching attachment:', error);
+    }
+  };
   // Handle received message
-  const handleReceivedMessages = (messages: MessageInterface[]) => {
+  const handleReceivedMessages = async (messages: MessageInterface[]) => {
     // 按 conversationId 对消息分组
     const groupedMessages = _.groupBy(messages, 'conversationId');
-    // console.log('groupedMessages', groupedMessages);
-    // console.dir(groupedMessages);
     Object.entries(groupedMessages).forEach(([conversationId, msgs]) => {
-      const conversation = conversations[conversationId];
-
+      const conversation: ConversationInterface = conversations[conversationId];
+      // msgs = msgs.map((msg) => {
+      //   if (msg.content.type === 'image') {
+      //     msg.content.text = msg.content.mediaUrl;
+      //   }
+      //   return msg;
+      // });
       if (conversation) {
         // 如果会话已存在，将所有消息批量添加到会话
-        msgs.forEach((message) => {
-          dispatch(addMessageToConversation(message));
-          if (conversation.id === activeConversationId) {
-            dispatch(addMessage(message));
+        msgs.forEach((msg) => {
+          dispatch(addMessageToConversation(msg));
+          if (conversation.conversationId === activeConversationId) {
+            dispatch(addMessage(msg));
           }
         });
       } else {
         // 如果会话不存在，创建新的会话
-        const firstMessage = msgs[0]; // 获取分组中的第一条消息，用于初始化会话
+        const lastMessage = msgs[msgs.length - 1];
+        const isGroup = Array.isArray(lastMessage.recipient) && lastMessage.recipient.length > 1;
+        let displayName = '';
+        let avatar = '';
+        let contact: Contact|undefined;
+        if (Array.isArray(lastMessage.recipient) && lastMessage.recipient.length > 1) {
+          displayName = '[group chat]' + lastMessage.recipient.map((user) => user.name).join(', ');
+          avatar = lastMessage.recipient[0].avatar;
+        }else{
+          contact = contacts.find((c: Contact) => c.user.id === lastMessage.sender.id);
+          displayName = contact?.nickname || lastMessage.sender.name || 'husky';
+          avatar = lastMessage.sender.avatar;
+        }
+        let lastMessageAbstract = '';
+        const truncLength = 50;
+        if (lastMessage.content.type === 'text') {
+          lastMessageAbstract = lastMessage.content.text.length > truncLength ?
+            lastMessage.content.text.substring(0, truncLength) :
+            lastMessage.content.text;
+        }else{
+          lastMessageAbstract = `[${lastMessage.content.type}]`;
+        }
         const newConversation: ConversationInterface = {
+          lastUpdateTime: lastMessage.timestamp,
+          conversationId,
+          unreadCountTotal: msgs.length,
+          isGroup: isGroup, // 根据需要判断是否为群聊
+          isMuted: isGroup ? false : contact?.settings.mute ?? false,
           chatObject: {
-            user: firstMessage.sender,
-            nickname: 'peter',
+            id: lastMessage.sender.id,
+            displayName: displayName,
+            avatar: avatar,
             conversationId,
           },
-          conversationId,
-          participants: [
-            firstMessage.sender,
-            ...(Array.isArray(firstMessage.recipient) ? firstMessage.recipient : [firstMessage.recipient]),
-          ],
+          lastMessageAbstract,
+          groupInfo: lastMessage.groupInfo,
           messages: msgs, // 将分组的消息作为初始消息列表
           currentPage: 1,
           totalPages: 1,
           unreadCounts: {
-            [firstMessage.sender.id]: msgs.length,
+            [lastMessage.sender.id]: msgs.length,
           },
-          unreadCountTotal: msgs.length,
-          lastMessage: msgs[msgs.length - 1], // 最后一条消息
-          isGroup: false, // 根据需要判断是否为群聊
-          isMuted: false,
         };
-        // console.log('newConversation', newConversation);
         dispatch(addConversation(newConversation));
+        insertConversation(newConversation);
       }
-      // insertMessage(message);
     });
+    insertMessages(messages);
   };
 
   const loadMessages = async (conversation: ConversationInterface, page: number) => {
@@ -198,6 +242,7 @@ export const useMessageManager = () => {
       console.error('Failed to send message:', error);
     }
   };
+
 
   return { postMessage, handleReceivedMessage: handleReceivedMessages, handleSendMessage };
 };

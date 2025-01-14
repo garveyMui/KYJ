@@ -6,12 +6,15 @@ import { useEffect, useRef } from 'react';
 import { webSocket } from '@/utils/webSocket';
 import {addMessageToConversation} from '@/store/modules/Conversations';
 import {insertMessage} from '@/utils/database';
+import {debug, ableToFetchFromServer} from '@/appConfig';
 
 let reconnectTimerRef = null; // 定时器用于重连
 
 // WebSocket 管理函数
 export const useWebSocketManager = (handleReceivedMessage) => {
   const dispatch = useDispatch();
+  let maxRetryNum = 1;
+  let retryCounts = 0;
   const connectWebSocket = () => {
     webSocket.onopen = () => {
       console.log('WebSocket connection established');
@@ -23,13 +26,10 @@ export const useWebSocketManager = (handleReceivedMessage) => {
 
     webSocket.onmessage = (e) => {
       const data = JSON.parse(e.data);
-      console.log('Received data: ', data);
-      handleReceivedMessage(data.data);
-      // if (Array.isArray(data.data)) {
-      //   data.data.forEach(msg=>handleReceivedMessage(msg));
-      // }else{
-      //   handleReceivedMessage(data.data);
-      // }
+      // console.log('Received data: ', data);
+      if (!debug || ableToFetchFromServer) {
+        handleReceivedMessage(data.data);
+      }
     };
 
     webSocket.onerror = (e) => {
@@ -42,6 +42,11 @@ export const useWebSocketManager = (handleReceivedMessage) => {
       dispatch(disconnect());  // 清除 WebSocket 实例
       reconnectTimerRef = setInterval(() => {
         console.log('WebSocket connection is closed, reconnecting...');
+        retryCounts++;
+        if (retryCounts > maxRetryNum) {
+          clearInterval(reconnectTimerRef); // 清理重连定时器
+          return;
+        }
         connectWebSocket(); // 尝试重新连接
       }, 5000); // 5 秒后尝试重新连接
     };

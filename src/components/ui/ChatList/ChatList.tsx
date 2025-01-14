@@ -21,9 +21,10 @@ const ChatList: React.FC<{
   onPressConversation: (chatObject: ChatObject, conversationId: string, messages: MessageInterface[]) => void;
 }> = ({onPressConversation}) => {
   const {conversations} = useSelector((state: RootState) => state.conversation);
+  console.log('conversations', conversations);
   const sessionList = useMemo(() => {
     // console.log('conversations', conversations);
-    return _.orderBy(Object.values(conversations), ['lastMessage.timestamp'], ['desc']);
+    return _.orderBy(Object.values(conversations), ['lastUpdateTime'], ['desc']);
   }, [conversations]);
   const {conversationsRef} = useChatListContext();
   // console.log('conversationRef', conversationsRef.current);
@@ -35,13 +36,13 @@ const ChatList: React.FC<{
           // conversationsRef.current.get(item.lastMessage.sender.id),
           item.chatObject,
           item.conversationId,
-          item.messages,
+          _.orderBy(item.messages, ['timestamp', 'asc']),
         );
       }}>
       <View style={styles.messageContainer}>
         <View style={styles.leftSide}>
           <View style={styles.avatarContainer}>
-            <Image source={{uri: item.lastMessage.sender.avatar}} style={styles.avatar} />
+            <Image source={{uri: item.chatObject.avatar}} style={styles.avatar} />
             {item?.unreadCountTotal > 0 && (
               <View style={styles.badgeContainer}>
                 <Text style={styles.badgeText}>{item?.unreadCountTotal}</Text>
@@ -49,20 +50,22 @@ const ChatList: React.FC<{
             )}
           </View>
         </View>
-
         <View style={styles.rightSide}>
           <View style={styles.topRow}>
             <Text style={styles.sender}>
-              {conversationsRef.current.get(item.lastMessage.sender.id)?.nickname}
+              {/*{conversationsRef.current.get(item.lastMessage.sender.id)?.nickname}*/}
+              {item.chatObject.displayName}
             </Text>
             <Text style={styles.timestamp}>
-              {dayjs(new Date(item.lastMessage.timestamp)).format('HH:mm')}
+              {dayjs(new Date(item.lastUpdateTime)).format('HH:mm')}
             </Text>
           </View>
-          <Text style={styles.message}>
-            {item.lastMessage.content.type === 'text'
-              ? item.lastMessage.content.text
-              : `[${item.lastMessage.content.type}]`}
+          <Text
+            style={styles.message}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {item.lastMessageAbstract}
           </Text>
         </View>
       </View>

@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {MessageInterface, setMessage} from '@/store/modules/Messages.ts';
 import {RootState} from '@/store';
 import {ConversationInterface, setConversations} from '@/store/modules/Conversations.ts';
+import {markConversationAsRead} from '@/utils/database.ts';
 
 export const ChatListScene = () => {
   const dispatch = useDispatch();
@@ -18,22 +19,19 @@ export const ChatListScene = () => {
     conversationId: string,
     messages: MessageInterface[],
   ) => {
-    console.log('uid', chatObject.user.id);
-    if (chatObject.user.id !== '-1') {
-      dispatch(setChatObject({...chatObject, conversationId}));
-      dispatch(setMessage(messages));
-      // 深拷贝 conversations 并更新未读消息计数
-      const updatedConversations = { ...conversations };
-      if (updatedConversations[conversationId]) {
-        updatedConversations[conversationId] = {
-          ...updatedConversations[conversationId],
-          unreadCountTotal: 0,
-        };
-      }
-
-      dispatch(setConversations(updatedConversations));
+    dispatch(setChatObject({...chatObject, conversationId}));
+    dispatch(setMessage(messages));
+    // 深拷贝 conversations 并更新未读消息计数
+    const updatedConversations = { ...conversations };
+    if (updatedConversations[conversationId]) {
+      updatedConversations[conversationId] = {
+        ...updatedConversations[conversationId],
+        unreadCountTotal: 0,
+      };
     }
+    dispatch(setConversations(updatedConversations));
     navigation.navigate('Chat');
+    markConversationAsRead(conversationId);
   };
   return (
     <View style={styles.chatListContainer}>

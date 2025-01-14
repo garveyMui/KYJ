@@ -20,7 +20,7 @@ export const ChatListProvider = ({ children }:ChatListProviderProps) => {
     const contact = contacts[i];
     conversationMap.set(contact.user.id, {
       user: contact.user,
-      nickname: contact.nickname,
+      displayName: contact.nickname,
       conversationId: contact.conversationId,
     });
   }

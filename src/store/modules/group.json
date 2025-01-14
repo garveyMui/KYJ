@@ -1,0 +1,23 @@
+{
+  "RoomData": {
+    "Members": [
+      {
+        "UserName": "uid_tomato",
+        "DisplayName": "番茄",
+        "Role": 1
+      },
+      {
+        "UserName": "uid_potato",
+        "DisplayName": "土豆",
+        "Role": 1
+      },
+      {
+        "UserName": "uid_apple",
+        "DisplayName": "苹果",
+        "Role": 1
+      }
+    ],
+    "MaxCount": 500,
+    "Version": 1
+  }
+}

@@ -3,7 +3,8 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import messages, {MessageInterface} from '@/store/modules/Messages.ts';
+import messages, {MessageInterface, updateMessage} from '@/store/modules/Messages.ts';
+import {useDispatch} from 'react-redux';
 
 const MessageItem: React.FC<{
   message:MessageInterface;
@@ -13,7 +14,7 @@ const MessageItem: React.FC<{
   console.log('MessageItem', message.content.text);
   const [showName, setShowName] = useState(false);
   const [showTime, setShowTime] = useState(false);
-
+  const dispatch = useDispatch();
   const handlePress = () => {
     setShowName(!showName);
     setShowTime(!showTime);
@@ -29,10 +30,15 @@ const MessageItem: React.FC<{
         );
       case 'image':
         return (
-          <Image
-            source={{uri: message.content.mediaUrl}}
-            style={{width: 200, height: 200, borderRadius: 10}}
-          />
+          <View>
+            {/*<Text>*/}
+            {/*  {message.content.mediaUrl}*/}
+            {/*</Text>*/}
+            <Image
+              source={{uri: message.content.mediaUrl}}
+              style={{width: 200, height: 200, borderRadius: 10}}
+            />
+          </View>
         );
       case 'file':
         return (
@@ -40,7 +46,7 @@ const MessageItem: React.FC<{
             <Text style={{color: '#888888', fontSize: 14}}>
               {message.content.mediaInfo?.name}
             </Text>
-            {!message.content.downloaded ? (
+            {!message.status.downloaded ? (
               <TouchableOpacity
                 style={{marginLeft: 10}}
                 onPress={() => handleDownloadAndPreview(message)}>
@@ -51,6 +57,7 @@ const MessageItem: React.FC<{
                 style={{marginLeft: 10}}
                 onPress={() => {
                   console.log('message.onPreview');
+                  previewFile(message.content.mediaInfo.localPath);
                 }}>
                 <Text style={{color: '#007BFF', fontSize: 14}}>Preview</Text>
               </TouchableOpacity>
@@ -63,21 +70,32 @@ const MessageItem: React.FC<{
   };
   const previewFile = async filePath => {
     try {
+      console.log('filePath: ', filePath);
       await FileViewer.open(filePath);
     } catch (err) {
       console.error('File preview error:', err);
     }
   };
-  const handleDownloadAndPreview = async message => {
-    if (!message.downloaded) {
+  const handleDownloadAndPreview = async (message: MessageInterface) => {
+    console.log('messages status: ', message.status);
+    if (!message.status.downloaded) {
       const localPath = await handleFileDownload(
-        message.content.url,
-        message.content.fileName,
+        message.content.mediaUrl,
+        message.content.mediaInfo?.name,
       );
-      message.content.localPath = localPath; // Update the message object
-      message.content.downloaded = true; // Update state
+      console.log('fileMessage: ', message);
+      console.log('localPath: ', localPath);
+      try {
+        const newMessage: MessageInterface = JSON.parse(JSON.stringify(message));
+        newMessage.content.mediaInfo.localPath = localPath; // Update the message object
+        newMessage.status.downloaded = true; // Update state
+        dispatch(updateMessage(newMessage));
+        await previewFile(localPath);
+      } catch(e){
+        console.error(e);
+      }
     } else {
-      await previewFile(message.localPath);
+      await previewFile(message.content.mediaInfo.localPath);
     }
   };
   const handleFileDownload = async (fileUrl, fileName) => {

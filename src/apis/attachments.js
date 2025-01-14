@@ -10,3 +10,11 @@ export const postAttachAPI = async (formData, type = 'image') => {
     data: formData,
   });
 };
+
+export const getAttachAPI = async (attachmentId) => {
+  return request({
+    url: `/v1/attachment/${attachmentId}`,
+    method: 'GET',
+    responseType: 'blob',
+  });
+};

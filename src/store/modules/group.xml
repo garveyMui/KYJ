@@ -1,0 +1,16 @@
+<RoomData>
+    <Member UserName="uid_tomato">
+        <DisplayName>番茄</DisplayName>
+        <Role>1</Role>
+    </Member>
+    <Member UserName="uid_potato">
+        <DisplayName>番茄</DisplayName>
+        <Role>1</Role>
+    </Member>
+    <Member UserName="uid_apple">
+        <DisplayName>番茄</DisplayName>
+        <Role>1</Role>
+    </Member>
+    <MaxCount>500</MaxCount>
+    <Version>1</Version>
+</RoomData>

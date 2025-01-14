@@ -12,9 +12,9 @@ interface Status {
 
 export interface User {
   id: string;           // 用户ID
-  name: string;         // 用户名
-  avatar: string;       // 用户头像
-  status: Status; // 在线状态
+  name?: string;         // 用户名
+  avatar?: string;       // 用户头像
+  status?: Status; // 在线状态
 }
 
 const UserSlice = createSlice({

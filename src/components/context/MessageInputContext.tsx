@@ -122,7 +122,7 @@ export const MessageInputProvider: React.FC<MessageInputProviderProps> = ({ chil
       messageId: uuidv4(),
       conversationId: chatObject.conversationId,
       sender: {
-        id: '-1',
+        id: -1,
         name: 'user',
         avatar: require('../../assets/avatar.jpg'),
         status: {
@@ -130,7 +130,7 @@ export const MessageInputProvider: React.FC<MessageInputProviderProps> = ({ chil
           lastSeen: null,
         },
       },
-      recipient: chatObject.user,
+      terminalIds: [chatObject.id],
       content: {
         type: contentType,
         ...handler(content, name),

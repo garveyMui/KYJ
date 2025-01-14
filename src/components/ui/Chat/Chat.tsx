@@ -19,21 +19,7 @@ export const Chat = ({navigation}: IRouterParams) => {
   };
   const {contentOffset, handleScrollToEnd} =
     useChatContext();
-
-  const {
-    user: {
-      id: sender,
-      name,
-      avatar,
-    },
-    nickname,
-    conversationId
-  } = useSelector((state: RootState) => state.chatObject);
-  const chatObject = {
-    id: sender,
-    nickname,
-    avatar,
-  };
+  const {chatObject} = useSelector((state: RootState) => state);
   console.log('chatObject', chatObject);
   useEffect(() => {
     handleScrollToEnd();
@@ -47,7 +33,7 @@ export const Chat = ({navigation}: IRouterParams) => {
           navigateToChatSetting={navigateToChatSetting}
           chatObject={chatObject}
         />
-        <MessageList conversationId={conversationId} />
+        <MessageList conversationId={chatObject.conversationId} />
         <MessageInputProvider>
           <MessageInput />
         </MessageInputProvider>

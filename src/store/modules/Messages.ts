@@ -1,12 +1,14 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {User} from '@/store/modules/User';
+import {GroupInfo} from '@/store/modules/Conversations.ts';
 // import {_postMessage} from '@/components/functional/MessageManager';
 
 export interface MessageInterface {
   messageId: string;    // 唯一的消息ID
   conversationId: string; // 会话ID，单聊或群聊的唯一标识
   sender: User;         // 发送者的信息
-  recipient: User[] | User;  // 收件人（单聊或群聊）
+  terminalIds?: number[];
+  recipient?: User[] | User;  // 收件人（单聊或群聊） 发送时有效
   content: MessageContent; // 消息内容（文本、图片、文件等）
   timestamp: string;    // 发送时间（ISO 格式时间）
   status?: MessageStatus;  // 消息状态（送达、已读等）
@@ -15,23 +17,25 @@ export interface MessageInterface {
   recalledBy?: string;
   recallTime?: string;  // 撤回时间
   metadata?: MessageMetadata;  // 消息附加信息
-  editedAt?: string;  // 编辑时间（如果编辑过）
   pushNotification?: boolean;  // 是否推送通知
   mentions?: string[];
+  groupInfo?: GroupInfo;
 }
 
 interface MessageContent {
   type: 'text' | 'image' | 'video' | 'file' | 'location' | 'audio' | 'default';  // 消息类型
-  text?: string;       // 文本消息
+  text: string;       // 文本消息
   mediaUrl?: string;   // 媒体消息URL
   mediaInfo?: MediaInfo; // 文件信息
   downloaded?: boolean;
   location?: LocationInfo;  // 位置信息
 }
+
 interface MediaInfo {
   name: string;   // 文件名
   size: number;   // 文件大小
   mimeType: string;  // mime类型
+  localPath: string;
 }
 
 interface LocationInfo {
@@ -42,7 +46,11 @@ interface LocationInfo {
 
 interface MessageStatus {
   delivered: boolean;  // 是否已送达
-  read: boolean;  // 是否已读
+  downloaded?: boolean;
+  isRead: boolean;  // 是否已读
+  isRecalled: boolean;
+  recalledBy?: string;
+  recallTime?: string;  // 撤回时间
 }
 
 interface MessageMetadata {
@@ -81,6 +89,15 @@ const messagesSlice = createSlice({
     setMessage: (state, action: PayloadAction<MessageInterface[]>) => {
       state.messagesList = action.payload;
     },
+    updateMessage: (state, action: PayloadAction<MessageInterface> ) => {
+      state.messagesList = state.messagesList.map(message => {
+        if (message.messageId === action.payload.messageId) {
+          return action.payload;
+        }else{
+          return message;
+        }
+      });
+    },
   },
 });
 
@@ -93,7 +110,7 @@ const messagesSlice = createSlice({
 // };
 
 
-export const {addMessage, removeMessage, setMessage} = messagesSlice.actions;
+export const {addMessage, removeMessage, setMessage, updateMessage} = messagesSlice.actions;
 
 // export {postMessage};
 

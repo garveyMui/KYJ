@@ -2,8 +2,10 @@ import {createSlice} from '@reduxjs/toolkit';
 import {User} from './User';
 
 interface ChatObject {
-  user: User;
-  nickname: string;
+  // user?: User;
+  id: string;
+  displayName: string;
+  avatar: string;
   conversationId: string;
 }
 const ChatObjectSlice = createSlice({
@@ -19,13 +21,14 @@ const ChatObjectSlice = createSlice({
         online: false,
       },
     },
-    nickname: 'nickname',
+    id: '-1',
+    displayName: 'nickname',
+    avatar: 'avatar',
     conversationId: '',
   } as ChatObject,
   reducers: {
     setChatObject: (state, action) => {
-      state.user = action.payload.user;
-      state.nickname = action.payload.nickname;
+      state.displayName = action.payload.displayName;
       state.conversationId = action.payload.conversationId;
     },
   },

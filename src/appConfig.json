@@ -1,0 +1,9 @@
+{
+  "debug": true,
+  "resetDatabase": true,
+  "ableToFetchFromServer": true,
+  "ableToPostMessageToServer": true,
+  "ableToPostAttachmentToServer": true,
+  "DocsLLMBackend": "deepseek",
+  "InputLLMBackend": "deepseek"
+}
