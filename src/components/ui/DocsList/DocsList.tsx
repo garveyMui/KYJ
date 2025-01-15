@@ -5,16 +5,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../../store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DocsList: React.FC<Props> = ({conversationId}) => {
-  const {messagesList} = useSelector((state: RootState) => state.messages);
-  const chatRecords = useMemo((): Array<Message> => {
-    const getChatRecords = (): Array<Message> => {
-      return messagesList.filter(
-        (item: Message) => item.content.type === 'file',
-      );
-    };
-    return getChatRecords();
-  }, [messagesList]);
+const DocsList = () => {
+  const {docsList} = useSelector((state: RootState) => state.messages);
   // const {messageListRef, inputHeight, contentHeight, handleScrollToEnd} = useChatContext();
   // useEffect(() => {
   //   handleScrollToEnd();
@@ -40,10 +32,10 @@ const DocsList: React.FC<Props> = ({conversationId}) => {
       contentContainerStyle={{
         flexGrow: 1,
       }}
-      data={chatRecords}
+      data={docsList}
       renderItem={({item}) => (
         <TouchableWithoutFeedback onPress={() => {}}>
-          <MessageItem message={item} isOwnMessage={item.sender.id === '-1'} />
+          <MessageItem message={item} isOwnMessage={false} />
         </TouchableWithoutFeedback>
       )}
       keyExtractor={item => item.messageId.toString()}

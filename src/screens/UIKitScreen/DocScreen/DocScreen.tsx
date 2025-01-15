@@ -3,6 +3,7 @@ import {IRouterParams} from '../../../interface';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {Docs} from '@/components/ui/Docs';
 import {DocsContextProvider} from '@/components/context/DocsContext';
+import {ChatContextProvider} from '@/components/context';
 
 const windowHeight = Dimensions.get('window').height;
 export const DocScreen = ({navigation}: IRouterParams) => {
@@ -14,9 +15,11 @@ export const DocScreen = ({navigation}: IRouterParams) => {
   };
   return (
     <View style={styles.container}>
-      <DocsContextProvider>
+      {/*<DocsContextProvider>*/}
+      <ChatContextProvider>
         <Docs navigation={navigation} />
-      </DocsContextProvider>
+      </ChatContextProvider>
+      {/*</DocsContextProvider>*/}
     </View>
   );
 };

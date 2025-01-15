@@ -25,6 +25,7 @@ export const Chat = ({navigation}: IRouterParams) => {
     handleScrollToEnd();
   }, [handleScrollToEnd]);
   console.log('contentOffset', contentOffset);
+  const {messagesList} = useSelector((state: RootState) => state.messages);
   return (
     <SafeAreaView style={[styles.outerContainer, { height: windowHeight - contentOffset }]}>
       <View style={styles.container}>
@@ -33,7 +34,7 @@ export const Chat = ({navigation}: IRouterParams) => {
           navigateToChatSetting={navigateToChatSetting}
           chatObject={chatObject}
         />
-        <MessageList conversationId={chatObject.conversationId} />
+        <MessageList messagesList={messagesList}/>
         <MessageInputProvider>
           <MessageInput />
         </MessageInputProvider>

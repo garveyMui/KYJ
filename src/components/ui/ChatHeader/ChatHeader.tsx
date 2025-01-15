@@ -1,8 +1,9 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {ChatObject} from '@/store/modules/ChatObject.ts';
 
-const ChatHeader = ({navigateBack, navigateToChatSetting, chatObject}) => {
+const ChatHeader:React.FC<Props> = ({navigateBack, navigateToChatSetting, chatObject}) => {
   console.log('chatObject in header', chatObject);
   return (
     <View style={styles.container}>
@@ -10,7 +11,7 @@ const ChatHeader = ({navigateBack, navigateToChatSetting, chatObject}) => {
         <AntDesign name="arrowleft" size={24} color="#000" />
       </TouchableOpacity>
       <Image source={{uri: chatObject.avatar}} style={styles.avatar} />
-      <Text style={styles.username}>{chatObject.nickname}</Text>
+      <Text style={styles.username}>{chatObject.displayName}</Text>
       <TouchableOpacity
         onPress={navigateToChatSetting}
         style={styles.settingButton}>
@@ -19,6 +20,12 @@ const ChatHeader = ({navigateBack, navigateToChatSetting, chatObject}) => {
     </View>
   );
 };
+
+interface Props {
+  navigateBack: ()=>void;
+  navigateToChatSetting: () => void;
+  chatObject: ChatObject;
+}
 
 const styles = StyleSheet.create({
   container: {

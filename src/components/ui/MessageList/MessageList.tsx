@@ -4,9 +4,9 @@ import {useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
 import {useChatContext} from '../../context';
+import {MessageInterface} from '@/store/modules/Messages.ts';
 
-const MessageList: React.FC<Props> = ({conversationId}) => {
-  const {messagesList} = useSelector((state: RootState) => state.messages);
+const MessageList: React.FC<{messagesList: MessageInterface[]}> = ({messagesList}) => {
   const {messageListRef, inputHeight, contentHeight, handleScrollToEnd} =
     useChatContext();
   useEffect(() => {
@@ -23,7 +23,7 @@ const MessageList: React.FC<Props> = ({conversationId}) => {
       data={messagesList}
       renderItem={({item}) => (
         <TouchableWithoutFeedback onPress={() => {}}>
-          <MessageItem message={item} isOwnMessage={item.sender.id === -1} />
+          <MessageItem message={item} isOwnMessage={item.sender.id === '-1'} />
         </TouchableWithoutFeedback>
       )}
       keyExtractor={item => item.messageId.toString()}
@@ -39,10 +39,5 @@ const styles = StyleSheet.create({
     // backgroundColor: '#1F1F1F',
   },
 });
-
-interface Props {
-  conversationId: string | null;
-}
-
 
 export {MessageList};

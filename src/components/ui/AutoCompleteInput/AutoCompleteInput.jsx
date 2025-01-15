@@ -1,6 +1,7 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, TextInput, View} from 'react-native';
 import {useDocsInputContext} from '@/components/context';
+import {MessageInput} from '@/components/ui/MessageInput';
 
 const AutoCompleteInput = () => {
   const {
@@ -24,25 +25,15 @@ const AutoCompleteInput = () => {
           )}
         />
       )}
-      <TextInput
-        style={styles.input}
-        value={inputText}
-        onChangeText={handleInputChange}
-        placeholder="输入文本"
-      />
+      <MessageInput onChangeText={handleInputChange} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 10,
-  },
-  input: {
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 5,
+    height: 'auto',
   },
   suggestion: {
     padding: 10,

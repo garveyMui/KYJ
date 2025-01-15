@@ -2,8 +2,6 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {User} from '@/store/modules/User';
 import {GroupInfo} from '@/store/modules/Conversations.ts';
 
-// import {_postMessage} from '@/components/functional/MessageManager';
-
 export interface MessageInterface {
   messageId: string;    // 唯一的消息ID
   conversationId: string; // 会话ID，单聊或群聊的唯一标识
@@ -13,14 +11,42 @@ export interface MessageInterface {
   content: MessageContent; // 消息内容（文本、图片、文件等）
   timestamp: string;    // 发送时间（ISO 格式时间）
   status?: MessageStatus;  // 消息状态（送达、已读等）
-  isRead?: boolean;      // 标记消息是否已读
-  isRecalled?: boolean;  // 是否已撤回
-  recalledBy?: string;
-  recallTime?: string;  // 撤回时间
   metadata?: MessageMetadata;  // 消息附加信息
-  pushNotification?: boolean;  // 是否推送通知
   mentions?: string[];
   groupInfo?: GroupInfo;
+}
+
+export interface BaseMessage {
+  type: 'text' | 'image' | 'video' | 'file' | 'location' | 'audio' | 'default';  // 消息类型
+  messageId: string;    // 唯一的消息ID
+  conversationId: string; // 会话ID，单聊或群聊的唯一标识
+  sender: User;         // 发送者的信息
+  baseContent: MessageContent; // 消息内容（文本、图片、文件等）
+  timestamp: string;    // 发送时间（ISO 格式时间）
+}
+
+export interface AttachmentMessage extends BaseMessage {
+  localPath: string;
+}
+
+export interface GroupMessage extends BaseMessage {
+  groupInfo: GroupInfo;
+}
+
+export interface SendingMessage extends BaseMessage {
+  recipient: number[];
+}
+
+export interface PersistentMessage extends BaseMessage {
+
+}
+
+export interface ReceivedMessage extends BaseMessage {
+
+}
+
+export interface DisplayMessage extends BaseMessage {
+
 }
 
 interface MessageContent {
@@ -65,10 +91,12 @@ interface MessageMetadata {
 // 定义状态的类型
 interface MessagesState {
   messagesList: MessageInterface[];
+  docsList: MessageInterface[];
 }
 
 const initialState: MessagesState = {
   messagesList: [],
+  docsList: [],
 };
 
 const messagesSlice = createSlice({
@@ -99,20 +127,16 @@ const messagesSlice = createSlice({
         }
       });
     },
+    addDocument: (state, action: PayloadAction<MessageInterface | MessageInterface[]>) => {
+      if (action.payload instanceof Array) {
+        state.docsList = [...state.docsList, ...action.payload];
+      }else{
+        state.docsList.push(action.payload);
+      }
+    },
   },
 });
 
-// const postMessage = (message: MessageInterface, callbacks: (()=> void)[]) => {
-//   return async (dispatch: any) => {
-//     dispatch(addMessage(message));
-//     callbacks.forEach(callback => callback());
-//     await _postMessage(message);
-//   };
-// };
-
-
-export const {addMessage, removeMessage, setMessage, updateMessage} = messagesSlice.actions;
-
-// export {postMessage};
+export const {addMessage, removeMessage, setMessage, updateMessage, addDocument} = messagesSlice.actions;
 
 export default messagesSlice.reducer;

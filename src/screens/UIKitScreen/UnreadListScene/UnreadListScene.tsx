@@ -7,7 +7,7 @@ import {RootState} from '@/store';
 import {Conversations} from '@/store/modules/Conversations.ts';
 import {useMessengerContext} from '@/components/context/MessengerContext.tsx';
 
-export const UnreadListScene: React.FC<{}> = () => {
+export const UnreadListScene = () => {
   const {conversations} = useSelector((state: RootState) => state.conversation);
   const {onPressConversation} = useMessengerContext();
   const unreadConversations: Conversations = {};

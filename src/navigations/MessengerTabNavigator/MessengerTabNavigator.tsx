@@ -11,20 +11,14 @@ import {IRouterParams} from '@/interface.ts';
 import {SceneMap, TabView} from 'react-native-tab-view';
 import {ChatListScene} from '@/screens/UIKitScreen';
 import {UnreadListScene} from '@/screens/UIKitScreen/UnreadListScene';
-import {ChatObject} from '@/store/modules/ChatObject.ts';
-import {MessageInterface} from '@/store/modules/Messages.ts';
 import {MessengerContextProvider} from '@/components/context/MessengerContext.tsx';
 
 const ChatRoute = () => {
   return ChatListScene();
 };
 
-interface OnPressConvProps {
-  onPressConversation: (chatObject: ChatObject, conversationId: string, messages: MessageInterface[]) => void;
-}
-
-const UnreadRoute: React.FC<OnPressConvProps> = ({onPressConversation}) => {
-  return UnreadListScene({onPressConversation});
+const UnreadRoute = () => {
+  return UnreadListScene();
 };
 
 const NoticeRoute = () => (
@@ -57,11 +51,6 @@ export const MessengerTabNavigator = ({ navigation }: IRouterParams) => {
   });
   // Create an animated value for smooth tab indicator transition
   const tabIndicatorPosition = useState(new Animated.Value(0))[0];
-  // Animated background color
-  const backgroundColor = tabIndicatorPosition.interpolate({
-    inputRange: [0, 1, 2], // Corresponding to the tabs
-    outputRange: ['#009688', '#ff4081', '#673ab7'], // Color change for each tab
-  });
   // Update tab indicator position when the index changes
   const onIndexChange = (newIndex: number) => {
     Animated.spring(tabIndicatorPosition, {

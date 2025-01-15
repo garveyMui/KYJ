@@ -1,6 +1,6 @@
 import {postMessageAPI} from '@/apis/messages';
 import {getAttachAPI, postAttachAPI} from '@/apis/attachments';
-import {addMessage, MessageInterface} from '@/store/modules/Messages';
+import {addDocument, addMessage, MessageInterface} from '@/store/modules/Messages';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addConversation,
@@ -111,16 +111,15 @@ export const useMessageManager = () => {
   };
   // Handle received message
   const handleReceivedMessages = async (messages: MessageInterface[]) => {
+    const DocsMsgs = messages.filter((msg) => {
+      return msg.content.type === 'file';
+    });
+    dispatch(addDocument(DocsMsgs));
     // 按 conversationId 对消息分组
     const groupedMessages = _.groupBy(messages, 'conversationId');
     Object.entries(groupedMessages).forEach(([conversationId, msgs]) => {
       const conversation: ConversationInterface = conversations[conversationId];
-      // msgs = msgs.map((msg) => {
-      //   if (msg.content.type === 'image') {
-      //     msg.content.text = msg.content.mediaUrl;
-      //   }
-      //   return msg;
-      // });
+
       if (conversation) {
         // 如果会话已存在，将所有消息批量添加到会话
         msgs.forEach((msg) => {

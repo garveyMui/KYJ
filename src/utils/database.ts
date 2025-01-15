@@ -132,6 +132,22 @@ export const createTable = (): void => {
       error =>
         console.error('Error creating contacts table:', error.message),
     );
+     tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS docs(
+        timestamp DATETIME,
+        messageId TEXT,
+        fileName TEXT,
+        senderId TEXT,
+        isRead INTEGER DEFAULT 0,
+        localPath TEXT,
+        extra TEXT DEFAULT '',
+        PRIMARY KEY (timestamp, messageId),
+        FOREIGN KEY (senderId) REFERENCES users(userid)
+      )`,
+      [],
+      () => console.log('Docs table created or already exists'),
+      error => console.error('Error creating docs table:', error.message),
+    );
   });
 };
 
