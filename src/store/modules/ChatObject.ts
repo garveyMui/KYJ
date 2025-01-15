@@ -10,20 +10,10 @@ interface ChatObject {
 const ChatObjectSlice = createSlice({
   name: 'ChatObject',
   initialState: {
-    user: {
-      id: '-1',
-      name: 'user_name',
-      avatar: 'avatar',
-      status: {
-        lastSeen: '',
-        statusMessage: 'offline',
-        online: false,
-      },
-    },
-    id: '-1',
+    id: 'LLM',
     displayName: 'nickname',
     avatar: 'avatar',
-    conversationId: '',
+    conversationId: 'LLM',
   } as ChatObject,
   reducers: {
     setChatObject: (state, action) => {

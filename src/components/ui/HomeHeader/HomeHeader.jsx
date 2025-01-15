@@ -1,9 +1,10 @@
 import React from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Text, TouchableOpacity, View, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {DocsHeader} from '@/components/ui/DocsHeader';
 import avatarImage from '@/assets/avatar.jpg';
+import {ContactsHeader} from '@/components/ui/ContactsHeader';
 
 const HomeHeader = ({title}) => {
   const navigation = useNavigation();
@@ -23,9 +24,11 @@ const HomeHeader = ({title}) => {
     name: 'ChatGPT',
     avatar,
   };
-  console.log('avatar', avatarImage);
   const {routeName: currentRoute} = useSelector(state => state.bottomTab);
-  console.log('currentRoute', currentRoute);
+
+  // 获取屏幕宽度并计算右边距
+  const screenWidth = Dimensions.get('window').width;
+
   const renderHeaderContentByRoute = () => {
     const routeConfig = {
       Docs: (
@@ -35,22 +38,23 @@ const HomeHeader = ({title}) => {
           chatObject={chatObject}
         />
       ),
-      // 未来可以继续添加其他路由的配置
+      Contacts: (
+        <ContactsHeader />
+      ),
       default: (
         <Text style={styles.routeText}>{currentRoute || 'No Route Name'}</Text>
       ),
     };
     return routeConfig[currentRoute] || routeConfig.default;
   };
+
   return (
     <View style={styles.header}>
-      {/* 固定部分：头像 */}
       <TouchableOpacity
-        style={styles.avatarContainer}
+        style={[styles.avatarContainer]}
         onPress={handleSettingPress}>
         <Image source={avatarImage} style={styles.avatar} alt={'Avatar'} />
       </TouchableOpacity>
-      {/* 路由特定内容部分 */}
       {renderHeaderContentByRoute()}
     </View>
   );
@@ -60,11 +64,9 @@ const styles = {
   header: {
     height: 35,
     width: '100%',
-    // backgroundColor: '#3498db',
     flexDirection: 'row',
-    // flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     paddingHorizontal: 15,
     position: 'relative',
   },
@@ -82,7 +84,7 @@ const styles = {
     width: 30,
     height: 30,
     borderRadius: 20,
-    marginRight: 10,
+    marginRight: 0, // 初始化为0, 后续通过计算设置
     overflow: 'hidden',
     zIndex: 101,
   },
@@ -91,9 +93,9 @@ const styles = {
     height: '100%',
   },
   routeText: {
-    position: 'absolute', // 绝对定位，确保它相对于父容器定位
-    left: '50%', // 将元素从左边开始
-    transform: [{ translateX: '-50%' }], // 使用 translateX 使它居中
+    position: 'absolute',
+    left: '50%',
+    transform: [{ translateX: '-50%' }],
     color: 'black',
     fontSize: 18,
   },

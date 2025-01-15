@@ -26,9 +26,9 @@ const ChatList: React.FC<{
   // const {conversations} = useSelector((state: RootState) => state.conversation);
   console.log('conversations', conversations);
   const sessionList = useMemo(() => {
-    // console.log('conversations', conversations);
+    console.log('conversations', conversations);
     return _.orderBy(
-      Object.values(conversations),
+      Object.values(conversations).filter(item=>item.conversationId !== 'LLM'),
       ['lastUpdateTime'],
       ['desc'],
     );

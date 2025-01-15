@@ -21,8 +21,8 @@ export interface ConversationInterface {
 export interface GroupInfo {
   // groupName: string;                // 群聊名称
   // groupAvatar?: string;             // 群聊头像（可选）
-  members: User[];                  // 群聊成员
-  adminIds: string[];               // 群聊管理员的用户ID
+  members: User[]; // 群聊成员
+  adminIds: string[]; // 群聊管理员的用户ID
   maxMembers?: number;
 }
 
@@ -35,15 +35,45 @@ interface ConversationsState {
 }
 
 export interface Conversations {
-  [conversationId: string]: ConversationInterface;  // 使用 conversationId 作为键，存储对应的 Conversation
+  [conversationId: string]: ConversationInterface; // 使用 conversationId 作为键，存储对应的 Conversation
 }
 // type Conversations = Map<string, ConversationInterface>;
 
 // 初始状态
 const initialState: ConversationsState = {
-  activeConversationId: null,
-  conversations: {},
-  // conversations: new Map(),
+  activeConversationId: 'LLM',
+  conversations: {
+    LLM: {
+      lastUpdateTime: new Date().toISOString(),
+      conversationId: 'LLM',
+      unreadCountTotal: 0,
+      isGroup: false,
+      isMuted: false,
+      chatObject: {
+        id: 'LLM',
+        displayName: 'LLM',
+        avatar: '',
+        conversationId: 'LLM',
+      },
+      lastMessageAbstract: "I'm here for you!🥰",
+      groupInfo: null,
+      messages: [],
+      currentPage: 0,
+      totalPages: 0,
+    },
+  },
+};
+
+const getMsgAbstract = (message: MessageInterface) => {
+  if (message.content.type === 'text') {
+    return message.content.text;
+  } else if (message.content.type === 'image') {
+    return '[图片]';
+  } else if (message.content.type === 'file') {
+    return '[文件]';
+  } else {
+    return '[未知类型]';
+  }
 };
 
 const Conversations = createSlice({
@@ -64,38 +94,46 @@ const Conversations = createSlice({
       delete state.conversations[action.payload];
       // state.conversations.delete(action.payload);
     },
-    updateConversation: (state, action: PayloadAction<ConversationInterface>) => {
+    updateConversation: (
+      state,
+      action: PayloadAction<ConversationInterface>,
+    ) => {
       state.conversations[action.payload.conversationId] = action.payload;
     },
-    addMessageToConversation : (state: any, action: PayloadAction<MessageInterface>) => {
+    addMessageToConversation: (
+      state,
+      action: PayloadAction<MessageInterface>,
+    ) => {
       console.log('addMessageToConversation', action.payload);
       const message = action.payload;
       const conversation = state.conversations[message.conversationId];
-      conversation.messages.push(message);  // 添加消息到会话
-      conversation.lastMessage = message;   // 更新最后一条消息
-      conversation.unreadCountTotal += message.isRead ? 0 : 1;   // 更新总未读消息数
-      if (message.sender.id !== -1){
-        conversation.unreadCounts[message.sender.id] = (conversation.unreadCounts[message.sender.id] || 0) + 1;  // 更新发送者的未读消息数
+      conversation.messages.push(message); // 添加消息到会话
+      conversation.lastMessageAbstract = getMsgAbstract(message); // 更新最后一条消息
+      conversation.lastUpdateTime = message.timestamp; // 更新最后更新时间
+      if (message.sender.id !== '-1') {
+        conversation.unreadCountTotal += message.status?.isRead ? 0 : 1; // 更新总未读消息数
       }
     },
-    removeMessageFromConversation : (state: any, action: PayloadAction<{ conversationId: string, messageId: string }>) => {
-      const { conversationId, messageId } = action.payload;
+    removeMessageFromConversation: (
+      state,
+      action: PayloadAction<{conversationId: string; messageId: string}>,
+    ) => {
+      const {conversationId, messageId} = action.payload;
       const conversation = state.conversations[conversationId];
 
       if (conversation) {
         // 删除指定的消息
-        conversation.messages = conversation.messages.filter((message: MessageInterface) => message.messageId !== messageId);
-
+        conversation.messages = conversation.messages.filter(
+          (message: MessageInterface) => message.messageId !== messageId,
+        );
         // 如果删除的是最后一条消息，需要更新 `lastMessage`
         if (conversation.messages.length > 0) {
-          conversation.lastMessage = conversation.messages[conversation.messages.length - 1];
+          conversation.lastMessageAbstract =
+            getMsgAbstract(conversation.messages[conversation.messages.length - 1]);
         } else {
           // 如果该会话没有消息，清空最后一条消息
-          conversation.lastMessage = null;
+          conversation.lastMessageAbstract = '';
         }
-
-        // 更新未读消息数（这里的更新逻辑要根据需求来调整）
-        conversation.unreadCountTotal = conversation.messages.filter((message: MessageInterface)=> !message.isRead).length;
       }
     },
   },

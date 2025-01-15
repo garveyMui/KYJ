@@ -2,12 +2,23 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
+import {setMessage} from '@/store/modules/Messages.ts';
+import {useDispatch} from 'react-redux';
 
-const ChatHeader:React.FC<Props> = ({navigateBack, navigateToChatSetting, chatObject}) => {
-  console.log('chatObject in header', chatObject);
+const ChatHeader: React.FC<Props> = ({
+  navigateBack,
+  navigateToChatSetting,
+  chatObject,
+}) => {
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigateBack} style={styles.backButton}>
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(setMessage([]));
+          navigateBack();
+        }}
+        style={styles.backButton}>
         <AntDesign name="arrowleft" size={24} color="#000" />
       </TouchableOpacity>
       <Image source={{uri: chatObject.avatar}} style={styles.avatar} />
@@ -22,7 +33,7 @@ const ChatHeader:React.FC<Props> = ({navigateBack, navigateToChatSetting, chatOb
 };
 
 interface Props {
-  navigateBack: ()=>void;
+  navigateBack: () => void;
   navigateToChatSetting: () => void;
   chatObject: ChatObject;
 }

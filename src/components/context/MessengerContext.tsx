@@ -26,7 +26,7 @@ export const MessengerContextProvider: React.FC<IProps> = ({ children }) => {
     conversationId: string,
     messages: MessageInterface[],
   ) => {
-    dispatch(setChatObject({...chatObject, conversationId}));
+    dispatch(setChatObject(chatObject));
     dispatch(setMessage(messages));
     const updatedConversation = JSON.parse(JSON.stringify(conversations[conversationId]));
     updatedConversation.unreadCountTotal = 0;

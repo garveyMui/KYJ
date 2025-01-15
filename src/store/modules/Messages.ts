@@ -7,7 +7,8 @@ export interface MessageInterface {
   conversationId: string; // 会话ID，单聊或群聊的唯一标识
   sender: User;         // 发送者的信息
   terminalIds?: number[];
-  recipient?: User[] | User;  // 收件人（单聊或群聊） 发送时有效
+  // recipient?: User[] | User;  // 收件人（单聊或群聊） 发送时有效
+  recipient?: string[];
   content: MessageContent; // 消息内容（文本、图片、文件等）
   timestamp: string;    // 发送时间（ISO 格式时间）
   status?: MessageStatus;  // 消息状态（送达、已读等）
@@ -71,7 +72,7 @@ interface LocationInfo {
   address: string;  // 地址描述
 }
 
-interface MessageStatus {
+export interface MessageStatus {
   delivered: boolean;  // 是否已送达
   downloaded?: boolean;
   isRead: boolean;  // 是否已读

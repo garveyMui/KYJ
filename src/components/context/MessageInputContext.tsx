@@ -82,65 +82,10 @@ export const MessageInputProvider: React.FC<MessageInputProviderProps> = ({ chil
   const [imagesUploaded, setImagesUploaded] = useState<ImageType[]>([]);
   const [filesToUpload, setFilesToUpload] = useState<FileType[]>([]);
   const [filesUploaded, setFilesUploaded] = useState<FileType[]>([]);
-  const chatObject = useSelector((state: any) => state.chatObject) as ChatObject;
   const dispatch = useDispatch();
   const { handleScrollToEnd } = useChatContext();
 
-  type ContentHandler = (content: string, name?: string) => {
-    text?: string;
-    mediaUrl?: string;
-    mediaInfo?: {
-      name: string;
-      size: number;
-      mimeType: string;
-    };
-  };
-
-  const contentHandlers: Record<
-    'text' | 'video' | 'image' | 'file' | 'location' | 'audio' | 'default',
-    ContentHandler
-  > = {
-    text: (content: string) => ({ text: content }),
-    default: (content: string, name: string = '') => ({
-      mediaUrl: content,
-      mediaInfo: {
-        name,
-        size: 0,
-        mimeType: 'image/jpeg', // 默认 MIME 类型
-      },
-    }),
-  };
-
-  const createMessage = (
-    content: string,
-    contentType: 'video' | 'text' | 'image' | 'file' | 'location' | 'audio' | 'default',
-    name = ''
-  ): MessageInterface => {
-    const handler = contentHandlers[contentType] || contentHandlers.default;
-
-    return {
-      messageId: uuidv4(),
-      conversationId: chatObject.conversationId,
-      sender: {
-        id: -1,
-        name: 'user',
-        avatar: require('../../assets/avatar.jpg'),
-        status: {
-          online: true,
-          lastSeen: null,
-        },
-      },
-      terminalIds: [chatObject.id],
-      content: {
-        type: contentType,
-        ...handler(content, name),
-      },
-      isRead: true,
-      timestamp: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss') + 'Z',
-    };
-  };
-
-  const { handleSendMessage } = useMessageManager();
+  const { handleSendMessage, createMessage } = useMessageManager();
 
   const handleSend = () => {
     handleSendMessage(createMessage(text, 'text'), [() => setText('')]);
@@ -205,8 +150,6 @@ export const MessageInputProvider: React.FC<MessageInputProviderProps> = ({ chil
       if (!DocumentPicker.isCancel(err)) throw err;
     }
   };
-
-
 
   const handleTakePhoto = () => {
     const options = {

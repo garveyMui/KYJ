@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 
-import {IRouterParams} from '../../../interface';
+import {IRouterParams} from '@/interface';
 import {Dimensions, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../../store';
+import {RootState} from '@/store';
 import {DocsList} from '../DocsList';
 import {AutoCompleteInput} from '../AutoCompleteInput';
 import {
@@ -23,44 +23,31 @@ export const Docs = ({navigation}: IRouterParams) => {
   };
   const dispatch = useDispatch();
   const {messagesList} = useSelector((state: RootState) => state.messages);
-  console.log('Docs chat', messagesList);
+  // console.log('Docs chat', messagesList);
   const {contentOffset} = useChatContext();
   const [isExpanded, setIsExpanded] = useState(false); // State to toggle between 75% height and full screen
   const [layout, setLayout] = useState({
     docsListFlexBasis: '20%',
     AIChatFlexBasis: '60%',
   });
-  useEffect(() => {
-    const shrinkLayout = {docsListFlexBasis: '20%', AIChatFlexBasis: '60%'};
-    const expandLayout = {docsListFlexBasis: '0%', AIChatFlexBasis: '90%'};
-    if (isExpanded) {
-      setLayout(expandLayout);
-    } else {
-      setLayout(shrinkLayout);
-    }
-  }, [isExpanded]);
   const toggleHeight = () => {
     setIsExpanded(!isExpanded);
   };
   const handleClose = () => {
-    // setLayout({
-    //   docsListFlexBasis: '80%',
-    //   AIChatFlexBasis: '0%',
-    // });
+    setIsExpanded(false);
     dispatch(setMessage([]));
   };
   return (
     <View style={[styles.container, {bottom: contentOffset}]}>
-      <View
+      {!isExpanded && <View
         style={[
-          styles.docsListContainer,
-          {flexBasis: layout.docsListFlexBasis},
+          styles.docsListContainer
         ]}>
         <DocsList />
-      </View>
+      </View>}
       {messagesList.length > 0 && (
         <View
-          style={[styles.AIChatContainer, {flexBasis: layout.AIChatFlexBasis}]}
+          style={[styles.AIChatContainer, styles.card, styles.shadowProp, {flexBasis: layout.AIChatFlexBasis}]}
         >
           <View style={styles.AIBtnContainer}>
             <TouchableOpacity onPress={toggleHeight} style={styles.toggleButton}>
@@ -99,25 +86,58 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: windowHeight,
     borderStyle: 'solid',
-    borderWidth: 1,
-    // backgroundColor: 'yellow',
+    // borderWidth: 1,
+    // backgroundColor: 'white',
+    // 轮廓阴影（适用于iOS）
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },  // 阴影的方向
+    shadowOpacity: 0.1, // 阴影的透明度
+    shadowRadius: 8, // 阴影的模糊半径
+    // 浮动阴影（适用于Android）
+    elevation: 5,  // 安卓设备的阴影效果
   },
   docsListContainer: {
     flex: 1,
     flexBasis: '20%',
+    visibility: 'hidden',
     width: '100%',
+    height: 0,
     // backgroundColor: 'green',
+  },
+  card: {
+    width: '98%',
+    // backgroundColor: 'white',
+    backgroundColor: '#fafafa',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginVertical: 1,
+    marginHorizontal: 'auto',
+  },
+  shadowProp: {
+    // 轮廓阴影（适用于iOS）
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    // 安卓设备的阴影效果
+    elevation: 5,
   },
   AIChatContainer: {
     flex: 1,
     flexBasis: '60%',
-    height: 200,
+    // height: 200,
     flexDirection: 'column',
-    width: '100%',
+    // width: 300,
     borderBottomWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
-    // backgroundColor: 'blue',
+    borderColor: 'white',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    // borderWidth: 2,
+    // padding: 10,
+    // backgroundColor: '#C0C0C0', // 确保背景色是白色，这样才能显示阴影
+    zIndex: 200,
+    overflow: 'visible',
   },
   AIBtnContainer: {
     flexDirection: 'row',

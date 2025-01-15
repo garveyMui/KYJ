@@ -1,7 +1,7 @@
 import React from 'react';
 
-import {ChatSetting} from '@tencentcloud/chat-uikit-react-native';
-import {IRouterParams} from '../../../interface';
+import {IRouterParams} from '@/interface.ts';
+import {StyleSheet, View} from 'react-native';
 
 export const ChatSettingScreen = ({navigation}: IRouterParams) => {
   const navigateBack = () => {
@@ -13,10 +13,12 @@ export const ChatSettingScreen = ({navigation}: IRouterParams) => {
   };
 
   return (
-    <ChatSetting
-      navigateBack={navigateBack}
-      navigateToChat={navigateBack}
-      navigateToConversationList={navigateToConversationList}
-    />
+    <View style={styles.container}/>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

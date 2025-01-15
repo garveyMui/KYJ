@@ -2,17 +2,25 @@ import React, {useEffect} from 'react';
 
 import {IRouterParams} from '@/interface';
 import {Dimensions, SafeAreaView, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '@/store';
 import {MessageList} from '../MessageList';
 import {ChatHeader} from '../ChatHeader';
 import {MessageInput} from '../MessageInput';
 import {MessageInputProvider, useChatContext} from '../../context';
+import {setChatObject} from '@/store/modules/ChatObject.ts';
 
 const windowHeight = Dimensions.get('window').height;
 export const Chat = ({navigation}: IRouterParams) => {
+  const dispatch = useDispatch();
   const navigateBack = () => {
     navigation.goBack();
+    dispatch(setChatObject({
+      id: 'LLM',
+      displayName: 'Deepseek',
+      avatar: require('../../../assets/AIfavicon.png'),
+      conversationId: 'LLM',
+    }));
   };
   const navigateToChatSetting = () => {
     navigation.navigate('ChatSetting');

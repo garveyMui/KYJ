@@ -1,6 +1,6 @@
 import {postMessageAPI} from '@/apis/messages';
 import {getAttachAPI, postAttachAPI} from '@/apis/attachments';
-import {addDocument, addMessage, MessageInterface} from '@/store/modules/Messages';
+import {addDocument, addMessage, MessageInterface, MessageStatus} from '@/store/modules/Messages';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   addConversation,
@@ -15,14 +15,20 @@ import {
   insertMessages,
 } from '@/utils/database.ts';
 import {Contact} from '@/store/modules/Contacts.ts';
+import {streamChatGPT, syncChat} from '@/utils/openaiClient.ts';
+import {v4 as uuidv4} from 'uuid';
+import dayjs from 'dayjs';
+import {ChatObject} from '@/store/modules/ChatObject.ts';
+
 
 export const _postMessage = async (message: MessageInterface) => {
   try {
+    console.log('msg pending sending', message);
     const formData = new FormData();
     formData.append('message', message);
     // 附加普通字段 sender 和 recipient
     formData.append('sender', message.sender.id); // 发送者ID
-    formData.append('recipient', message.terminalIds); // 所有接收者ID TODO: 暂时只支持单聊
+    formData.append('recipient', message.recipient); // 所有接收者ID
     let response: any | null = null;
     let result = null;
     switch (message.content.type) {
@@ -122,9 +128,14 @@ export const useMessageManager = () => {
 
       if (conversation) {
         // 如果会话已存在，将所有消息批量添加到会话
+        console.log('inserting msgs', msgs);
+        console.log('conversationId', conversationId);
+        console.log('activeConversationId', activeConversationId);
         msgs.forEach((msg) => {
           dispatch(addMessageToConversation(msg));
+          console.log(conversation.conversationId);
           if (conversation.conversationId === activeConversationId) {
+            console.log('here reached');
             dispatch(addMessage(msg));
           }
         });
@@ -230,15 +241,94 @@ export const useMessageManager = () => {
     }
   };
 
+  type ContentHandler = (content: string, name?: string) => {
+    text?: string;
+    mediaUrl?: string;
+    mediaInfo?: {
+      name: string;
+      size: number;
+      mimeType: string;
+    };
+  };
+
+  const chatObject = useSelector((state: any) => state.chatObject) as ChatObject;
+  const contentHandlers: Record<
+    'text' | 'video' | 'image' | 'file' | 'location' | 'audio' | 'default',
+    ContentHandler
+  > = {
+    text: (content: string) => ({ text: content }),
+    default: (content: string, name: string = '') => ({
+      mediaUrl: content,
+      mediaInfo: {
+        name,
+        size: 0,
+        mimeType: 'image/jpeg', // 默认 MIME 类型
+      },
+    }),
+  };
+  const createMessage = (
+    contentRaw: string,
+    contentType: 'video' | 'text' | 'image' | 'file' | 'location' | 'audio' | 'default',
+    fileName = '',
+    senderId = '-1'
+  ): MessageInterface => {
+    const handler = contentHandlers[contentType] || contentHandlers.default;
+    const name = senderId === 'LLM' ? 'LLM' : 'user';
+    const avatar = senderId === 'LLM' ? chatObject.avatar : require('@/assets/avatar.jpg');
+    const msgStatus: MessageStatus = {
+      delivered: false,
+      downloaded: true,
+      isRead: true,
+      isRecalled: false,
+    };
+    let content: any = {};
+    console.log(contentRaw);
+    content['type'] = contentType;
+    if (contentType==='text'){
+      content['text'] = contentRaw;
+    }else{
+      content['mediaUrl'] = contentRaw;
+      content['mediaInfo'] = {
+        name: fileName,
+      };
+      content['downloaded'] = true;
+      content['location'] = contentRaw;
+    }
+    return {
+      messageId: uuidv4(),
+      conversationId: chatObject.conversationId,
+      sender: {
+        id: senderId,
+        name,
+        avatar,
+        status: {
+          online: true,
+          lastSeen: null,
+        },
+      },
+      recipient: [chatObject.id],
+      status: msgStatus,
+      content,
+      timestamp: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss') + 'Z',
+    };
+  };
   // 发送消息的逻辑
   const postMessage = async (message: MessageInterface) => {
+    console.log('msg pending sending', message);
     try {
-      await _postMessage(message);
+      if (message.recipient.length === 1 && message.recipient[0] === 'LLM') {
+        console.log('message recipient is LLM', message.recipient);
+        const responseText = await syncChat(message, undefined);
+        console.log('responseText', responseText);
+        const responseMsg = createMessage(responseText, 'text', '', 'LLM');
+        dispatch(addMessage(responseMsg));
+      }else{
+        await _postMessage(message);
+      }
     } catch (error) {
       console.error('Failed to send message:', error);
     }
   };
 
-
-  return { postMessage, handleReceivedMessage: handleReceivedMessages, handleSendMessage };
+  return { postMessage, handleReceivedMessage: handleReceivedMessages, handleSendMessage, createMessage };
 };

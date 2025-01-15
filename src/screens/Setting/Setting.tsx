@@ -1,6 +1,9 @@
-import React, {useEffect, useState} from 'react';
+// this setting page is steal from @tencentcloud/chat-uikit-react-native'
+
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -8,20 +11,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useIsFocused} from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-import {
-  StoreName,
-  TUIStore,
-  TUITranslateService,
-} from '@tencentcloud/chat-uikit-engine';
+import type { IRouterParams } from '@/interface.ts';
 
-import type {IRouterParams} from '../../interface';
-
-import {Avatar} from '@tencentcloud/chat-uikit-react-native';
-import {clearUserInfo} from '@/store/modules/User.ts';
-import {useDispatch} from 'react-redux';
+import { clearUserInfo } from '@/store/modules/User.ts';
+import { useDispatch } from 'react-redux';
+import avatarImage from '@/assets/avatar.jpg';
 
 interface IConfig {
   name: string;
@@ -35,12 +31,10 @@ export const Setting = ({ navigation }: IRouterParams) => {
   const [configList, setConfigList] = useState<IConfig[]>([]);
   const [isPageShow, setIsPageShow] = useState<boolean>(true);
 
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const onComfirm = () => {
     dispatch(clearUserInfo());
   };
-  // const navi = useNavigation();
   const onPress = () => {
     Alert.alert(
       '确认退出',
@@ -50,12 +44,8 @@ export const Setting = ({ navigation }: IRouterParams) => {
         {
           text: '确认',
           onPress: () => {
-            // LogoutChat(() => {
-            //   navigation.navigate('Login');
-            // });
             onComfirm();
             navigation.navigate('Login');
-            // navi.navigate('Login');
           },
         },
       ],
@@ -63,107 +53,51 @@ export const Setting = ({ navigation }: IRouterParams) => {
     );
   };
 
-  const onUserProfile = (userProfile: Record<string, any>) => {
-    setProfile(userProfile);
-  };
-
   const onPressSetting = (item: IConfig) => {
     item.route && navigation.navigate(item.route);
   };
 
-  useEffect(() => {
-    TUIStore.watch(StoreName.USER, {
-      userProfile: onUserProfile,
-    });
-    return () => {
-      TUIStore.unwatch(StoreName.USER, {
-        userProfile: onUserProfile,
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    setConfigList([
-      {
-        route: 'Language',
-        name: TUITranslateService.t('Setting.LANGUAGE'),
-        value: TUITranslateService.t('Login.LANGUAGE'),
-      },
-      {
-        route: 'About',
-        key: 'Language',
-        name: TUITranslateService.t('Setting.ABOUT_IM'),
-      },
-    ]);
-    setIsPageShow(isFocused);
-  }, [isFocused]);
-
   return isPageShow && (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="transparent" translucent />
-      <Text style={styles.title}>{TUITranslateService.t('Setting.SETTING')}</Text>
+      <Text style={styles.title}>SETTING</Text>
       <View style={styles.profileContainer}>
-        <Avatar size={66} radius={33} uri={profile.avatar} />
+        <Image source={avatarImage} style={styles.avatarContainer} alt={'Avatar'} />
         <View style={styles.profile}>
-          <Text
-            style={styles.nick}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >
+          <Text style={styles.nick} ellipsizeMode="tail" numberOfLines={1}>
             {profile.nick || '-'}
           </Text>
-          <Text
-            style={styles.text}
-            numberOfLines={2}
-          >
+          <Text style={styles.text} numberOfLines={2}>
             {`ID: ${profile.userID}`}
           </Text>
-          <Text
-            style={styles.text}
-            ellipsizeMode="tail"
-            numberOfLines={1}
-          >
-            {profile.selfSignature || TUITranslateService.t('Setting.NO_SIGNATURE')}
+          <Text style={styles.text} ellipsizeMode="tail" numberOfLines={1}>
+            {profile.selfSignature || 'NO_SIGNATURE'}
           </Text>
         </View>
       </View>
       <View style={styles.settingContainer}>
-        {
-          configList.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.settingItem}
-              activeOpacity={1}
-              onPress={() => { onPressSetting(item); }}
-            >
-              <Text
-                style={styles.label}
-                ellipsizeMode="tail"
-                numberOfLines={1}
-              >
-                {item.name}
+        {configList.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.settingItem}
+            activeOpacity={1}
+            onPress={() => { onPressSetting(item); }}
+          >
+            <Text style={styles.label} ellipsizeMode="tail" numberOfLines={1}>
+              {item.name}
+            </Text>
+            <View style={styles.content}>
+              <Text style={styles.value} ellipsizeMode="tail" numberOfLines={1}>
+                {item.value}
               </Text>
-              <View style={styles.content}>
-                <Text
-                  style={styles.value}
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                >
-                  {item.value}
-                </Text>
-                {/*<Image style={styles.icon} source={rightArrow} />*/}
-                <AntDesign name="message1" size={10} color={'black'} />
-              </View>
-            </TouchableOpacity>
-          ))
-        }
+              <AntDesign name="message1" size={10} color={'black'} />
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
       <View style={styles.footerContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={onPress}
-        >
-          <Text style={styles.buttonText}>{TUITranslateService.t('Setting.LOGOUT')}</Text>
+        <TouchableOpacity style={styles.button} onPress={onPress}>
+          <Text style={styles.buttonText}>LOGOUT</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -171,6 +105,14 @@ export const Setting = ({ navigation }: IRouterParams) => {
 };
 
 const styles = StyleSheet.create({
+  avatarContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    marginRight: 0,
+    overflow: 'hidden',
+    zIndex: 101,
+  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight,
@@ -191,7 +133,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     paddingHorizontal: 16,
-    paddingVertical: 10,
   },
   profile: {
     flex: 1,

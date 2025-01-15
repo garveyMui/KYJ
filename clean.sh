@@ -1,3 +1,7 @@
+watchman watch-del-all
+watchman shutdown-server
+brew services restart watchman
+
 # 清理 yarn 缓存
 echo "Clearing yarn cache..."
 yarn cache clean

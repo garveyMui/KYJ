@@ -4,7 +4,7 @@ import RNFS from 'react-native-fs';
 import FileViewer from 'react-native-file-viewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MessageInterface, updateMessage} from '@/store/modules/Messages.ts';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const MessageItem: React.FC<{
   message: MessageInterface;
@@ -31,9 +31,6 @@ const MessageItem: React.FC<{
       case 'image':
         return (
           <View>
-            {/*<Text>*/}
-            {/*  {message.content.mediaUrl}*/}
-            {/*</Text>*/}
             <Image
               source={{uri: message.content.mediaUrl}}
               style={{width: 200, height: 200, borderRadius: 10}}
@@ -43,7 +40,7 @@ const MessageItem: React.FC<{
       case 'file':
         return (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: '#888888', fontSize: 14}}>
+            <Text style={{color: '#888888', fontSize: 14}} numberOfLines={3} ellipsizeMode="tail">
               {message.content.mediaInfo?.name}
             </Text>
             {!message.status.downloaded ? (
@@ -132,6 +129,7 @@ const MessageItem: React.FC<{
     await AsyncStorage.removeItem('downloadedFiles');
     console.log('Cache cleared');
   };
+  const {chatObjectAvatar} = useSelector(state => state.chatObject);
   return (
     <TouchableOpacity
       onPress={handlePress}
@@ -145,7 +143,7 @@ const MessageItem: React.FC<{
       }}>
       {!isOwnMessage && (
         <Image
-          source={{uri: message.sender.avatar}}
+          source={{uri: message.sender.avatar || chatObjectAvatar}}
           style={{width: 40, height: 40, borderRadius: 20}}
         />
       )}
