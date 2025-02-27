@@ -306,7 +306,7 @@ export const useMessageManager = () => {
           lastSeen: null,
         },
       },
-      recipient: [chatObject.id],
+      recipient: [chatObject.conversationId],
       status: msgStatus,
       content,
       timestamp: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ss') + 'Z',
@@ -323,6 +323,7 @@ export const useMessageManager = () => {
         const responseMsg = createMessage(responseText, 'text', '', 'LLM');
         dispatch(addMessage(responseMsg));
       }else{
+        console.log('message recipient is human', message.recipient);
         await _postMessage(message);
       }
     } catch (error) {

@@ -2,7 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 
 interface ChatObject {
   // user?: User;
-  id: string;
+  // id: string;
   displayName: string;
   avatar: string;
   conversationId: string;
@@ -10,7 +10,7 @@ interface ChatObject {
 const ChatObjectSlice = createSlice({
   name: 'ChatObject',
   initialState: {
-    id: 'LLM',
+    // id: 'LLM',
     displayName: 'nickname',
     avatar: 'avatar',
     conversationId: 'LLM',

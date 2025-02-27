@@ -24,9 +24,9 @@ const ChatList: React.FC<{
   conversations: Record<string, ConversationInterface>;
 }> = ({onPressConversation, conversations}) => {
   // const {conversations} = useSelector((state: RootState) => state.conversation);
-  console.log('conversations', conversations);
+  // console.log('conversations', conversations);
   const sessionList = useMemo(() => {
-    console.log('conversations', conversations);
+    // console.log('conversations', conversations);
     return _.orderBy(
       Object.values(conversations).filter(item=>item.conversationId !== 'LLM'),
       ['lastUpdateTime'],
