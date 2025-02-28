@@ -5,7 +5,7 @@ import FileViewer from 'react-native-file-viewer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {MessageInterface, updateMessage} from '@/store/modules/Messages.ts';
 import {useDispatch, useSelector} from 'react-redux';
-
+import aiAvatar from '@/assets/avatars/assisstant.jpg';
 const MessageItem: React.FC<{
   message: MessageInterface;
   isOwnMessage: boolean;
@@ -40,7 +40,10 @@ const MessageItem: React.FC<{
       case 'file':
         return (
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text style={{color: '#888888', fontSize: 14}} numberOfLines={3} ellipsizeMode="tail">
+            <Text
+              style={{color: '#888888', fontSize: 14}}
+              numberOfLines={3}
+              ellipsizeMode="tail">
               {message.content.mediaInfo?.name}
             </Text>
             {!message.status.downloaded ? (
@@ -129,7 +132,7 @@ const MessageItem: React.FC<{
     await AsyncStorage.removeItem('downloadedFiles');
     console.log('Cache cleared');
   };
-  const {chatObjectAvatar} = useSelector(state => state.chatObject);
+  const conversationId = message.conversationId;
   return (
     <TouchableOpacity
       onPress={handlePress}
@@ -141,12 +144,18 @@ const MessageItem: React.FC<{
         borderRadius: 10,
         backgroundColor: isOwnMessage ? '#DCF8C6' : '#FFFFFF',
       }}>
-      {!isOwnMessage && (
-        <Image
-          source={{uri: message.sender.avatar || chatObjectAvatar}}
-          style={{width: 40, height: 40, borderRadius: 20}}
-        />
-      )}
+      {!isOwnMessage &&
+        (conversationId === 'LLM' ? (
+          <Image
+            source={aiAvatar}
+            style={{width: 40, height: 40, borderRadius: 20}}
+          />
+        ) : (
+          <Image
+            source={{uri: message.sender.avatar}}
+            style={{width: 40, height: 40, borderRadius: 20}}
+          />
+        ))}
       <View
         style={{
           flexDirection: 'column',

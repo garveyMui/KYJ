@@ -17,8 +17,9 @@ const ChatObjectSlice = createSlice({
   } as ChatObject,
   reducers: {
     setChatObject: (state, action) => {
-      state.displayName = action.payload.displayName;
-      state.conversationId = action.payload.conversationId;
+      console.log('setChatObject', action.payload);
+      state = {...state, ...action.payload};
+      console.log('state', state);
     },
   },
 });

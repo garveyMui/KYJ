@@ -1,0 +1,6 @@
+[
+  { "id": 0, "name": "DeepSeek", "avatar": "deepseek.ico"  },
+  { "id": 1, "name": "ChatGPT", "avatar": "chatgpt.ico" },
+  { "id": 2, "name": "ChatGLM", "avatar": "chatglm.png" },
+  { "id": 3, "name": "Cancel" }
+]

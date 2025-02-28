@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 0,
     // flexBasis: '10%',
-    borderWidth: 1,
+    borderWidth: 0,
     width: '100%',
     // height: 'auto',
     // height: 200,

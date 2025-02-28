@@ -15,10 +15,11 @@ import {
   insertMessages,
 } from '@/utils/database.ts';
 import {Contact} from '@/store/modules/Contacts.ts';
-import {streamChatGPT, syncChat} from '@/utils/openaiClient.ts';
+import {streamChat, streamChatGPT, syncChat} from '@/utils/openaiClient.ts';
 import {v4 as uuidv4} from 'uuid';
 import dayjs from 'dayjs';
 import {ChatObject} from '@/store/modules/ChatObject.ts';
+import {PayloadAction} from '@reduxjs/toolkit';
 
 
 export const _postMessage = async (message: MessageInterface) => {
@@ -274,7 +275,7 @@ export const useMessageManager = () => {
   ): MessageInterface => {
     const handler = contentHandlers[contentType] || contentHandlers.default;
     const name = senderId === 'LLM' ? 'LLM' : 'user';
-    const avatar = senderId === 'LLM' ? chatObject.avatar : require('@/assets/avatar.jpg');
+    const avatar = senderId === 'LLM' ? require('@/assets/avatars/assisstant.jpg') : require('@/assets/avatar.jpg');
     const msgStatus: MessageStatus = {
       delivered: false,
       downloaded: true,
@@ -318,10 +319,15 @@ export const useMessageManager = () => {
     try {
       if (message.recipient.length === 1 && message.recipient[0] === 'LLM') {
         console.log('message recipient is LLM', message.recipient);
-        const responseText = await syncChat(message, undefined);
-        console.log('responseText', responseText);
-        const responseMsg = createMessage(responseText, 'text', '', 'LLM');
-        dispatch(addMessage(responseMsg));
+        const STREAMING = true;
+        if (STREAMING) {
+          dispatch((await streamChat(message, undefined, createMessage) as PayloadAction<MessageInterface>));
+        }else{
+          const responseText = await syncChat(message, undefined);
+          console.log('responseText', responseText);
+          const responseMsg = createMessage(responseText, 'text', '', 'LLM');
+          dispatch(addMessage(responseMsg));
+        }
       }else{
         console.log('message recipient is human', message.recipient);
         await _postMessage(message);

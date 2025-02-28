@@ -3314,7 +3314,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.npmmirror.com/balanced-match/-/balanced-match-1.0.2.tgz"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
 
-base-64@^0.1.0:
+base-64@*, base-64@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmmirror.com/base-64/-/base-64-0.1.0.tgz"
   integrity sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==
@@ -7958,6 +7958,11 @@ os-tmpdir@~1.0.2:
   resolved "https://registry.npmmirror.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz"
   integrity sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==
 
+p-defer@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/p-defer/-/p-defer-3.0.0.tgz"
+  integrity sha512-ugZxsxmtTln604yeYd29EGrNhazN2lywetzpKhfmQjW/VJmhpDmWbiX+h0zL8V91R0UXkhb3KtPmyq9PZw3aYw==
+
 p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/p-finally/-/p-finally-1.0.0.tgz"
@@ -8441,6 +8446,18 @@ react-native-document-picker@^9.3.1, react-native-document-picker@>=9.3.0:
   dependencies:
     invariant "^2.2.4"
 
+react-native-event-source@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmmirror.com/react-native-event-source/-/react-native-event-source-1.1.0.tgz"
+  integrity sha512-CAs76IW8kTrdy0okfV2KPopm7E9TL0uNAR+SRrN7iZ/ii0zBeHWuhD4Q2F8gRKvmkrEtCZ6uwnfYL2TFmK0QZg==
+
+react-native-fetch-api@*:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/react-native-fetch-api/-/react-native-fetch-api-3.0.0.tgz"
+  integrity sha512-g2rtqPjdroaboDKTsJCTlcmtw54E25OjyaunUP0anOZn4Fuo2IKs8BVfe02zVggA/UysbmfSnRJIqtNkAgggNA==
+  dependencies:
+    p-defer "^3.0.0"
+
 react-native-file-viewer@^2.1.5:
   version "2.1.5"
   resolved "https://registry.npmmirror.com/react-native-file-viewer/-/react-native-file-viewer-2.1.5.tgz"
@@ -8464,7 +8481,7 @@ react-native-gesture-handler@^2.21.2, react-native-gesture-handler@>=2.14.0, rea
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-react-native-get-random-values@^1.11.0:
+react-native-get-random-values@*, react-native-get-random-values@^1.11.0:
   version "1.11.0"
   resolved "https://registry.npmmirror.com/react-native-get-random-values/-/react-native-get-random-values-1.11.0.tgz"
   integrity sha512-4BTbDbRmS7iPdhYLRcz3PGFIpFJBwNZg9g42iwa2P6FOv9vZj/xJc678RZXnLNZzd0qd7Q3CCF6Yd+CU2eoXKQ==
@@ -8509,6 +8526,11 @@ react-native-pager-view@^6.6.1, "react-native-pager-view@>= 6.0.0":
   version "6.6.1"
   resolved "https://registry.npmmirror.com/react-native-pager-view/-/react-native-pager-view-6.6.1.tgz"
   integrity sha512-2dFulYs8JxEUecemv1PGWCUv+ZQuwSaQfFiSr2++KH8km5HzpuS8vJ3MVb0M6UhpqacFDj9OGe7z97ks/mr7gA==
+
+react-native-polyfill-globals@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmmirror.com/react-native-polyfill-globals/-/react-native-polyfill-globals-3.1.0.tgz"
+  integrity sha512-6ACmV1SjXvZP2LN6J2yK58yNACKddcvoiKLrSQdISx32IdYStfdmGXrbAfpd+TANrTlIaZ2SLoFXohNwhnqm/w==
 
 react-native-progress@^5.0.1:
   version "5.0.1"
@@ -8564,6 +8586,11 @@ react-native-sqlite-storage@^6.0.1:
   resolved "https://registry.npmmirror.com/react-native-sqlite-storage/-/react-native-sqlite-storage-6.0.1.tgz"
   integrity sha512-1tDFjrint6X6qSYKf3gDyz+XB+X79jfiL6xTugKHPRtF0WvqMtVgdLuNqZunIXjNEvNtNVEbXaeZ6MsguFu00A==
 
+react-native-sse@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.npmmirror.com/react-native-sse/-/react-native-sse-1.2.1.tgz"
+  integrity sha512-zejanlScF+IB9tYnbdry0MT34qjBXbiV/E72qGz33W/tX1bx8MXsbB4lxiuPETc9v/008vYZ60yjIstW22VlVg==
+
 react-native-svg@*, react-native-svg@^15.10.1, react-native-svg@>=12.3.0:
   version "15.10.1"
   resolved "https://registry.npmmirror.com/react-native-svg/-/react-native-svg-15.10.1.tgz"
@@ -8580,7 +8607,7 @@ react-native-tab-view@^4.0.5:
   dependencies:
     use-latest-callback "^0.2.1"
 
-react-native-url-polyfill@^1.3.0:
+react-native-url-polyfill@*, react-native-url-polyfill@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmmirror.com/react-native-url-polyfill/-/react-native-url-polyfill-1.3.0.tgz"
   integrity sha512-w9JfSkvpqqlix9UjDvJjm1EjSt652zVQ6iwCIj1cVVkwXf4jQhQgTNXY6EVTwuAmUjg6BC6k9RHCBynoLFo3IQ==
@@ -9859,6 +9886,11 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+text-encoding@*:
+  version "0.7.0"
+  resolved "https://registry.npmmirror.com/text-encoding/-/text-encoding-0.7.0.tgz"
+  integrity sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA==
+
 text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmmirror.com/text-table/-/text-table-0.2.0.tgz"
@@ -10316,7 +10348,7 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-web-streams-polyfill@^3.3.2:
+web-streams-polyfill@*, web-streams-polyfill@^3.3.2:
   version "3.3.3"
   resolved "https://registry.npmmirror.com/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz"
   integrity sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==

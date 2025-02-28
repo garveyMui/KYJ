@@ -8,8 +8,8 @@ import {name as appName} from './app.json';
 import {Provider} from 'react-redux';
 import store from './src/store';
 import React from'react';
-import {AuthGuard} from 'src/components/functional/AuthGuard';
-import {useWebSocketManager} from 'src/components/functional/WebSocketManager';
+import { polyfill as polyfillFetch } from 'react-native-polyfill-globals/src/fetch';
+// polyfillFetch();
 
 const RootComponent = () => {
 

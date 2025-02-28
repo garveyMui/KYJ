@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {User} from '@/store/modules/User';
 import {GroupInfo} from '@/store/modules/Conversations.ts';
+import {MessageI} from '@/store/modules/LLMMessages.tsx';
 
 export interface MessageInterface {
   messageId: string;    // 唯一的消息ID
@@ -135,9 +136,16 @@ const messagesSlice = createSlice({
         state.docsList.push(action.payload);
       }
     },
+    pushMessage: (state, action: PayloadAction<MessageInterface>) => {
+      state.messagesList.push(action.payload);
+    },
+    updateLastMessage: (state, action: PayloadAction<MessageI>) => {
+      const length = state.messagesList.length;
+      state.messagesList[length - 1].content.text += action.payload.content;
+    },
   },
 });
 
-export const {addMessage, removeMessage, setMessage, updateMessage, addDocument} = messagesSlice.actions;
+export const {pushMessage, updateLastMessage, addMessage, removeMessage, setMessage, updateMessage, addDocument} = messagesSlice.actions;
 
 export default messagesSlice.reducer;

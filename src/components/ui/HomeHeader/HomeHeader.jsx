@@ -18,12 +18,6 @@ const HomeHeader = ({title}) => {
     navigation.navigate('ChatSetting');
   };
 
-  const {id: sender, name, avatar} = useSelector(state => state.chatObject);
-  const chatObject = {
-    id: 0,
-    name: 'ChatGPT',
-    avatar,
-  };
   const {routeName: currentRoute} = useSelector(state => state.bottomTab);
 
   // 获取屏幕宽度并计算右边距
@@ -35,7 +29,6 @@ const HomeHeader = ({title}) => {
         <DocsHeader
           navigateBack={navigateBack}
           navigateToChatSetting={navigateToChatSetting}
-          chatObject={chatObject}
         />
       ),
       Contacts: (
